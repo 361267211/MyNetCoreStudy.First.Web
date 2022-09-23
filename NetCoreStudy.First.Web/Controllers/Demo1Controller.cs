@@ -327,6 +327,10 @@ namespace NetCoreStudy.First.Web.Controllers
             return obj;
         }
 
+        /// <summary>
+        /// Emit动态生成类型
+        /// </summary>
+        /// <returns></returns>
         public static Type BuildDynamicTypeWithProperties()
         {
 
