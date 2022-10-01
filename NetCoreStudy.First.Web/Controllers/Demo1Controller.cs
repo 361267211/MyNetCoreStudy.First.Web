@@ -1,9 +1,11 @@
 ﻿using ExpressionTreeToString;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.EFCore.Entity;
 using NetCoreStudy.First.Utility;
+using NetCoreStudy.First.Utility.DistributedCache;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Linq.Expressions.Expression;
@@ -22,8 +25,10 @@ namespace NetCoreStudy.First.Web.Controllers
     public class Demo1Controller : ControllerBase
     {
         private readonly TestDbContext _dbContext;
-        public Demo1Controller(TestDbContext dbContext)
+        private readonly IDistributedCacheHelper _distrCache;
+        public Demo1Controller(TestDbContext dbContext, IDistributedCacheHelper distrCache)
         {
+            _distrCache = distrCache;
             _dbContext = dbContext;
         }
 
@@ -402,7 +407,7 @@ namespace NetCoreStudy.First.Web.Controllers
             custNamePropBldr.SetSetMethod(custNameSetPropMthdBldr);
 
             //自写字段赋值逻辑
-            ConstructorBuilder ctorBuilder =  myTypeBuilder.DefineConstructor(attributes: MethodAttributes.Public,
+            ConstructorBuilder ctorBuilder = myTypeBuilder.DefineConstructor(attributes: MethodAttributes.Public,
                                             callingConvention: CallingConventions.Standard,
                                             parameterTypes: new Type[0]);
 
@@ -436,5 +441,26 @@ namespace NetCoreStudy.First.Web.Controllers
             return retval;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<Book>> CacheTest(string id)
+        {
+            var book = await _distrCache.GetOrCreateAsync<Book>("zzq_Book" + id,
+                async (e) =>
+                {
+                    Book book1 = _dbContext.Books.FirstOrDefault(b => b.Id == System.Convert.ToInt64(id));
+                    return book1;
+                },
+                60
+                );
+            return book;
+
+        }
+
+        [HttpGet]
+        public async Task MyExceptionFilterTest(string id)
+        {
+            System.IO.File.ReadAllText("乱输一桶");
+ 
+        }
     }
 }
