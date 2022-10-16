@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreStudy.First.EFCore",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreStudy.First.Database.Migration", "NetCoreStudy.First.Database.Migration\NetCoreStudy.First.Database.Migration.csproj", "{E63B52CB-0858-484E-863C-8A49871C13B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreStudy.First.Utility", "NetCoreStudy.First.Utility\NetCoreStudy.First.Utility.csproj", "{D27F7270-3ABB-482F-9B20-6644496A8DEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreStudy.First.Utility", "NetCoreStudy.First.Utility\NetCoreStudy.First.Utility.csproj", "{D27F7270-3ABB-482F-9B20-6644496A8DEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitConsumer", "RabbitCreator\RabbitConsumer.csproj", "{5B457F72-422C-4ACB-86E7-713F3045F7BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D27F7270-3ABB-482F-9B20-6644496A8DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D27F7270-3ABB-482F-9B20-6644496A8DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D27F7270-3ABB-482F-9B20-6644496A8DEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B457F72-422C-4ACB-86E7-713F3045F7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B457F72-422C-4ACB-86E7-713F3045F7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B457F72-422C-4ACB-86E7-713F3045F7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B457F72-422C-4ACB-86E7-713F3045F7BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
