@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetCoreStudy.First.EFCore;
 
 namespace NetCoreStudy.First.EFCore.Migrations
 {
     [DbContext(typeof(TestDbContext))]
-    partial class TestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221008075650_identity")]
+    partial class identity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,24 +200,6 @@ namespace NetCoreStudy.First.EFCore.Migrations
                     b.ToTable("T_Comment");
                 });
 
-            modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.Merchan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Marchans");
-                });
-
             modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.MyRole", b =>
                 {
                     b.Property<long>("Id")
@@ -310,49 +294,6 @@ namespace NetCoreStudy.First.EFCore.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.OrderDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MarchanId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MarchanId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderDetail");
                 });
 
             modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.OrgUnit", b =>
@@ -485,21 +426,6 @@ namespace NetCoreStudy.First.EFCore.Migrations
                     b.Navigation("Article");
                 });
 
-            modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.OrderDetail", b =>
-                {
-                    b.HasOne("NetCoreStudy.First.EFCore.Entity.Merchan", "Marchan")
-                        .WithMany()
-                        .HasForeignKey("MarchanId");
-
-                    b.HasOne("NetCoreStudy.First.EFCore.Entity.Order", "Order")
-                        .WithMany("Details")
-                        .HasForeignKey("OrderId");
-
-                    b.Navigation("Marchan");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.OrgUnit", b =>
                 {
                     b.HasOne("NetCoreStudy.First.EFCore.Entity.OrgUnit", "Parent")
@@ -527,11 +453,6 @@ namespace NetCoreStudy.First.EFCore.Migrations
             modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.Article", b =>
                 {
                     b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.Order", b =>
-                {
-                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("NetCoreStudy.First.EFCore.Entity.OrgUnit", b =>

@@ -1,7 +1,9 @@
 ﻿using ExpressionTreeToString;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.IdentityModel.Tokens;
 using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.EFCore.Entity;
 using NetCoreStudy.First.Utility;
@@ -9,10 +11,13 @@ using NetCoreStudy.First.Utility.DistributedCache;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -452,11 +457,112 @@ namespace NetCoreStudy.First.Web.Controllers
 
         }
 
+        /// <summary>
+        /// 用于测试异常过滤器
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task MyExceptionFilterTest(string id)
         {
             System.IO.File.ReadAllText("乱输一桶");
  
+        }
+        /// <summary>
+        /// 用于测试事务
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task TransactionTest(string id)
+        {
+            _dbContext.Books.Add(new Book { Title = $"藏书{DateTime.Now.ToString()}",Price=DateTime.Now.Month* DateTime.Now.Day });
+            await _dbContext.SaveChangesAsync();
+            _dbContext.Articles.Add(new Article { Title = $"藏书{DateTime.Now.ToString()}", Content = DateTime.Now.ToString()});
+            await _dbContext.SaveChangesAsync();
+
+
+        }
+
+        /// <summary>
+        /// 生成JWT
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<string> GenerateJWT()
+        {
+            //JWT
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim("Passport", "123456"));
+            claims.Add(new Claim("QQ", "36126"));
+            claims.Add(new Claim("Id", "666"));
+            claims.Add(new Claim("Address", "chongqing"));
+            claims.Add(new Claim("Role", "admin"));
+
+            string key = "aaasssdddfffggghhhjjjkkklll";
+            DateTime expire = DateTime.Now.AddHours(1);//过期时间点
+
+            byte[] secBytes = Encoding.UTF8.GetBytes(key);
+            var secKey = new SymmetricSecurityKey(secBytes);//密钥
+            var credentials = new SigningCredentials(secKey, SecurityAlgorithms.HmacSha256);//加密算法类型
+            var tokenDescriptor = new JwtSecurityToken(claims: claims, expires: expire, signingCredentials: credentials);
+            string jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+            Console.WriteLine(jwt);
+            return jwt;
+        }
+
+        /// <summary>
+        /// 验证JWT
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task ValidJWT(string JWT)
+        {
+            //JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXNzcG9ydCI6IjEyMzQ1NiIsIlFRIjoiMzYxMjYiLCJJZCI6IjY2NiIsIkFkZHJlc3MiOiJjaG9uZ3FpbmciLCJSb2xlIjoiYWRtaW4iLCJleHAiOjE2NjUyMjM1MDB9.52zuA0ukXd7w1ajdU4hasCa9RE_E7kvhk_JSIL0FZoo";
+
+
+            string key = "aaasssdddfffggghhhjjjkkklll555";
+            byte[] secBytes = Encoding.UTF8.GetBytes(key);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            TokenValidationParameters validParam = new TokenValidationParameters();
+            var securityKey = new SymmetricSecurityKey(secBytes);
+            validParam.IssuerSigningKey = securityKey;//
+            validParam.ValidateIssuer = false;//
+            validParam.ValidateAudience = false;//
+            ClaimsPrincipal claimsPrincpal = tokenHandler.ValidateToken(JWT, validParam, out SecurityToken secToken);
+
+        }
+
+        /// <summary>
+        /// 验证Authorization
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize(Roles ="admin")]
+        public async Task TestUseAuthorization()
+        {
+            Console.WriteLine("666");
+        }
+
+
+
+        /// <summary>
+        /// 验证Authorization
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task OrderEdit()
+        {
+            Order order = new Order();
+            Merchan merchan = new Merchan { Name = "phone", Price = 15 };
+            order.AddDetail(merchan,5);
+            _dbContext.Add(order);
+            _dbContext.SaveChanges();
         }
     }
 }
