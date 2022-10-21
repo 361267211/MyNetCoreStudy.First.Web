@@ -10,7 +10,7 @@ namespace NetCoreStudy.First.Web.Filter
     {
         public Task OnExceptionAsync(ExceptionContext context)
         {
-            return System.IO.File.AppendAllTextAsync("e:/error.log", context.Exception.Message);
+            return System.IO.File.AppendAllTextAsync("d:/error.log", context.Exception.Message);
         }
     }
 }

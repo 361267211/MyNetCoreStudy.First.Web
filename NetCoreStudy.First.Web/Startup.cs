@@ -47,7 +47,10 @@ namespace NetCoreStudy.First.Web
             services.AddDbContext<TestDbContext>(opt =>
             {
                 string connStr = "Data Source=.;Initial Catalog=Demo1;User ID=sa;Password=his";
-                opt.UseSqlServer(connStr);
+   
+                connStr = "User ID=postgres;Password=Pwcwelcome1;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Connection Lifetime=0;";
+                opt.UseNpgsql(connStr);
+                // opt.UseSqlServer(connStr);
             });
 
             //分布式缓存
@@ -58,6 +61,7 @@ namespace NetCoreStudy.First.Web
                 opt.Filters.Add<LogExceptionFilter>();
                 opt.Filters.Add<MyActionFilter>();
                 opt.Filters.Add<TransactionScopeFilter>();
+                opt.Filters.Add<UnitOfWorkFilter>();
             });
 
             //JWT
@@ -94,6 +98,38 @@ namespace NetCoreStudy.First.Web
                     };
                 });
             services.AddAuthorization();
+
+            //cap
+            services.AddCap(c =>
+            {
+                c.UseEntityFramework<TestDbContext>();
+                //User ID=postgres;Password=Pwcwelcome1;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;
+                c.UsePostgreSql(connectionString: "User ID=postgres;Password=Pwcwelcome1;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Connection Lifetime=0;");
+
+                c.FailedRetryCount = 3;//触发失败回调的重试次数，注意与最大重试次数区分
+                c.FailedRetryInterval = 2;//重试间隔
+                c.SucceedMessageExpiredAfter = 60 * 60;//成功消息的保存时间
+                c.FailedThresholdCallback = async e =>
+                 {
+                     string message="";
+                     foreach (var item in e.Message.Headers)
+                     {
+                         message+=($"key:{item.Key},value:{item.Value}\r\n");
+                     }
+                     await System.IO.File.AppendAllTextAsync("d:/error.log", $"失败了,报错信息\r\n{message}");
+                 };
+                c.UseRabbitMQ(mq =>
+                {
+                    mq.HostName = "42.193.20.184"; //RabitMq服务器地址，依实际情况修改此地址
+                    mq.Port = 5672;
+                    mq.UserName = "guest";  //RabbitMq账号
+                    mq.Password = "guest";  //RabbitMq密码
+                                            //指定Topic exchange名称，不指定的话会用默认的
+                    mq.ExchangeName = "cap.text.exchange.zzq";//交换的名称
+
+                });
+
+            });
 
             //跨域问题配置
             string[] urls = new[] { "http://127.0.0.1:5173" };
@@ -163,6 +199,8 @@ namespace NetCoreStudy.First.Web
             app.UseHttpsRedirection();
 
 
+            // CAP
+            //app.UseCap();
 
             app.UseRouting();
 
