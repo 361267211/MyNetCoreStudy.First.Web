@@ -20,10 +20,10 @@ namespace NetCoreStudy.First.EFCore
         {
         }
 
-        public TestDbContext(DbContextOptions<TestDbContext> opt, IMediator mediator) : base(opt)
+       /* public TestDbContext(DbContextOptions<TestDbContext> opt, IMediator mediator) : base(opt)
         {
             _mediator = mediator;
-        }
+        }*/
         // private static ILoggerFactory _loggerFactory = LoggerFactory.Create(b => b.AddConsole());
         public DbSet<Book> Books { get; set; }
         public DbSet<Article> Articles { get; set; }
