@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace NetCoreStudy.First.Web.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
