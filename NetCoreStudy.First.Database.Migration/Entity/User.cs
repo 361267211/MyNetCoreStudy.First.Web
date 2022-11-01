@@ -30,7 +30,7 @@ namespace NetCoreStudy.First.Domain.Entity
         /// 必须有手机号
         /// </summary>
         /// <param name="phoneNumber"></param>
-        private User(PhoneNumber phoneNumber)
+        public User(PhoneNumber phoneNumber)
         {
             Id=Guid.NewGuid();
             PhoneNumber=phoneNumber;

@@ -12,8 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NetCoreStudy.First.Domain;
 using NetCoreStudy.First.EFCore;
-using NetCoreStudy.First.EFCore.Entity;
 using NetCoreStudy.First.Utility.DistributedCache;
 using NetCoreStudy.First.Web.Filter;
 using NetCoreStudy.First.Web.JWT;
@@ -44,17 +44,25 @@ namespace NetCoreStudy.First.Web
         public void ConfigureServices(IServiceCollection services)
         {
             //EF
-            services.AddDbContext<TestDbContext>(opt =>
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//pg数据库存在的时区问题需要通过本行代码解决
+            services.AddDbContext<UserDbContext>(opt =>
             {
                 string connStr = "Data Source=.;Initial Catalog=Demo1;User ID=sa;Password=his";
    
-                connStr = "User ID=postgres;Password=Pwcwelcome1;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Connection Lifetime=0;";
+                connStr = "User ID=postgres;Password=Pwcwelcome1;Host=localhost;Port=5432;Database=zzqDataBase;Pooling=true;Connection Lifetime=0;";
                 opt.UseNpgsql(connStr);
                 // opt.UseSqlServer(connStr);
             });
 
+            //仓储
+            services.AddScoped<IUserDomainRepository, UserDomainRepository>();  
+
             //分布式缓存
             services.AddScoped<IDistributedCacheHelper, DistributedCacheHelper>();
+
+            //应用服务
+            services.AddScoped<UserDomainService>();
+
             services.Configure<MvcOptions>(opt =>
             {
                 opt.Filters.Add<MyExceptionFilter>();
@@ -102,7 +110,7 @@ namespace NetCoreStudy.First.Web
             //cap
             services.AddCap(c =>
             {
-                c.UseEntityFramework<TestDbContext>();
+                c.UseEntityFramework<UserDbContext>();
                 //User ID=postgres;Password=Pwcwelcome1;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;
                 c.UsePostgreSql(connectionString: "User ID=postgres;Password=Pwcwelcome1;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Connection Lifetime=0;");
 

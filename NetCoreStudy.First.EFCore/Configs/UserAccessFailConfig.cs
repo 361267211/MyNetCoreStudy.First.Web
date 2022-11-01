@@ -14,7 +14,7 @@ namespace NetCoreStudy.First.EFCore.Configs
         public void Configure(EntityTypeBuilder<UserAccessFail> builder)
         {
             builder.ToTable("T_UserAccessFails");
-            builder.Property("isLockOut");
+            builder.Property("lockOut");
         }
     }
 }
