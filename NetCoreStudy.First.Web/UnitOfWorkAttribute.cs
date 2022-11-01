@@ -5,7 +5,7 @@ namespace NetCoreStudy.First.Web
     [AttributeUsage(AttributeTargets.Method)]
     public class UnitOfWorkAttribute: Attribute
     {
-        public UnitOfWorkAttribute(Type[] dbContextType)
+        public UnitOfWorkAttribute(params Type[] dbContextType)
         {
             _dbContextType = dbContextType;
         }

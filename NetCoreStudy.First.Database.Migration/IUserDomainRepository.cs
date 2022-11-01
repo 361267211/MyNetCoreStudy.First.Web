@@ -20,5 +20,6 @@ namespace NetCoreStudy.First.Domain
 
         Task<string?> RetrievePhoneCodeAsync(PhoneNumber phoneNumber);
         Task<string?> FindPhoneNumberCodeAsync(PhoneNumber phoneNumber);
+
     }
 }

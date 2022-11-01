@@ -40,13 +40,15 @@ namespace NetCoreStudy.First.EFCore
         public async Task<User?> FindOneAsync(PhoneNumber phoneNumber)
         {
             var exp = ExpressionHelper.MakeEqual((User u) => u.PhoneNumber, phoneNumber);
-            User? user = await _dbContext.Users.SingleOrDefaultAsync(exp);
+
+            User? user = await (_dbContext.Users.Include(e => e.AccessFail)).SingleOrDefaultAsync(exp);
+
             return user;
         }
 
         public async Task<User?> FindOneAsync(Guid userId)
         {
-            User? user = await _dbContext.Users.SingleOrDefaultAsync(e => e.Id == userId);
+            User? user = await (_dbContext.Users.Include(e => e.AccessFail)).SingleOrDefaultAsync(e => e.Id == userId);
             return user;
         }
 
@@ -61,7 +63,7 @@ namespace NetCoreStudy.First.EFCore
 
         public async Task PublishEventAsync(UserAccessResultEvent eventData)
         {
-            _mediator.Publish(eventData);
+          await  _mediator.Publish(eventData);
         }
 
         public Task<string> RetrievePhoneCodeAsync(PhoneNumber phoneNumber)
