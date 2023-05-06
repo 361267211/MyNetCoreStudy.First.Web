@@ -1,0 +1,761 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NetCoreStudy.First.Common</name>
+    </assembly>
+    <members>
+        <member name="T:NetCoreStudy.Core.Apollo.IgnoreMappingAttribute">
+            <summary>
+            自定义特性  作用对象：属性 添加特性后不会通过配置中心取值
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapConfig">
+            <summary>
+            Cap配置文件
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.Cap.SmartCapConfig.TenantName">
+            <summary>
+            租户名称
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapEventBase">
+            <summary>
+            Cap事件基类
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapPublishEventBase">
+            <summary>
+            Cap发布事件基类
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapSubscribeEventBase">
+            <summary>
+            Cap订阅事件基类
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapEventMsgBase">
+            <summary>
+            Cap事件消息基类
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventMsgBase.TenantName">
+            <summary>
+            租户名称
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapEventBindAttribute">
+            <summary>
+            Cap事件与对应消息类型绑定，用于建立事件与消息关联
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventBindAttribute.MsgType">
+            <summary>
+            事件对应消息类型
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Cap.SmartCapEventBindAttribute.#ctor(System.Type)">
+            <summary>
+            初始化消息类型
+            </summary>
+            <param name="msgType"></param>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapEventField">
+            <summary>
+            Cap事件描述信息
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventField.FieldType">
+            <summary>
+            字段类型
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventField.FieldName">
+            <summary>
+            字段名称
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventField.FieldDesc">
+            <summary>
+            字段说明
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapEventMsg">
+            <summary>
+            Cap事件消息描述信息
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Cap.SmartCapEventMsg.#ctor">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventMsg.Name">
+            <summary>
+            消息类型名称
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventMsg.Fields">
+            <summary>
+            类型字段信息
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapEventDes">
+            <summary>
+            Cap事件描述信息
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventDes.Name">
+            <summary>
+            事件名称
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventDes.Value">
+            <summary>
+            事件值
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventDes.Description">
+            <summary>
+            事件说明
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventDes.BindMsg">
+            <summary>
+            事件对应消息描述信息
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapEventIntroduction">
+            <summary>
+            事件描述信息，用于描述事件以及关联消息类型
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Cap.SmartCapEventIntroduction.#ctor">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventIntroduction.ServiceEventName">
+            <summary>
+            事件定义类型名称
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Cap.SmartCapEventIntroduction.EventList">
+            <summary>
+            包含的事件信息
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapExtensions">
+            <summary>
+            用于获取服务内所有发布事件描述信息
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Cap.SmartCapExtensions.ReplaceTenant(System.String,System.String)">
+            <summary>
+            替换Tenant名称
+            </summary>
+            <param name="oriStr"></param>
+            <param name="tenantName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Cap.SmartCapExtensions.CollectCapPublishEventIntroduction">
+            <summary>
+            获取服务类所有事件描述信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Cap.SmartCapExtensions.CollectIntroduction(System.Type)">
+            <summary>
+            获取某个事件描述信息
+            </summary>
+            <param name="capEventType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.Cap.SmartCapSubscribeAttribute">
+            <summary>
+            智图事件订阅属性，给订阅事件自动添加租户作为前缀
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Consul.ConsulExtension">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Consul.ConsulExtension.Discovery(System.String,System.String)">
+            <summary>
+            发现服务
+            </summary>
+            <param name="serviceName"></param>
+            <param name="consulUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.Consul.SmartConsulBuilder">
+            <summary>
+            智图Consul客户端连接构造器
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.Consul.SmartConsulBuilder._checks">
+            <summary>
+            心跳检查信息
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.Consul.SmartConsulBuilder._registryClients">
+            <summary>
+            需要连接注册服务的客户端
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Consul.SmartConsulBuilder.#ctor(System.String)">
+            <summary>
+            初始化
+            </summary>
+            <param name="addr"></param>
+        </member>
+        <member name="M:NetCoreStudy.Core.Consul.SmartConsulBuilder.InitRegistryHalfClients(System.String)">
+            <summary>
+            初始话Consul客户端连接信息
+            </summary>
+            <param name="consulAddress"></param>
+        </member>
+        <member name="M:NetCoreStudy.Core.Consul.SmartConsulBuilder.AddHealthCheck(Consul.AgentServiceCheck)">
+            <summary>
+            添加心跳检查信息
+            </summary>
+            <param name="check"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Consul.SmartConsulBuilder.AddHttpHealthCheck(System.String,System.Int32,System.Int32)">
+            <summary>
+            添加Http类型心跳检查信息
+            </summary>
+            <param name="url">端点地址</param>
+            <param name="timeout">超时时间</param>
+            <param name="interval">间隔时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Consul.SmartConsulBuilder.AddGRPCHealthCheck(System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            添加Grpc类型心跳检查信息
+            </summary>
+            <param name="endpoint">端点地址</param>
+            <param name="grpcUseTls">是否使用Tls</param>
+            <param name="timeout">超时时间</param>
+            <param name="interval">间隔时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Consul.SmartConsulBuilder.RegisterService(System.String,System.String,System.Int32,System.String[])">
+            <summary>
+            向Consul注册服务
+            </summary>
+            <param name="name"></param>
+            <param name="host"></param>
+            <param name="port"></param>
+            <param name="tags"></param>
+        </member>
+        <member name="T:NetCoreStudy.Core.Consul.SmartConsulOptions">
+            <summary>
+            Consul注册配置信息
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Consul.SmartConsulOptions.Address">
+            <summary>
+            Consul Agent地址
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.Consul.SmartConsulOptions.Token">
+            <summary>
+            Token信息
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Consul.SmartConsulServiceCollectionExtensions">
+            <summary>
+            Consul服务注册扩展方法
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Consul.SmartConsulServiceCollectionExtensions.AddConsul(Microsoft.Extensions.DependencyInjection.IServiceCollection,NetCoreStudy.Core.Consul.SmartConsulOptions)">
+            <summary>
+            添加Consul服务
+            </summary>
+            <param name="service">ServiceCollection</param>
+            <param name="options">配置信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Consul.SmartConsulServiceCollectionExtensions.AddConsul(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            添加Consul服务
+            </summary>
+            <param name="service">ServiceCollection</param>
+            <param name="url">Consul Agent连接地址</param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.GrpcClientHelper.GrpcChanelChecker">
+            <summary>
+            数据校验帮助类
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChanelChecker.CheckNotNull``1(``0,System.String)">
+            <summary>
+            检查对象是否为空
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="argument"></param>
+            <param name="paramName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChanelChecker.CheckNotNullOrEmpty(System.String,System.String)">
+            <summary>
+            检查字符串不能为空或者""
+            </summary>
+            <param name="argument"></param>
+            <param name="paramName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChanelChecker.CheckIsUrlFormat(System.String)">
+            <summary>
+            检测串值是否为合法的网址格式
+            </summary>
+            <param name="strValue">要检测的String值</param>
+            <returns>成功返回true 失败返回false</returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChanelChecker.CheckIsFormat(System.String,System.String)">
+            <summary>
+            检测串值是否为合法的格式
+            </summary>
+            <param name="strRegex">正则表达式</param>
+            <param name="strValue">要检测的String值</param>
+            <returns>成功返回true 失败返回false</returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool">
+            <summary>
+            Grpc信道池子，用于信道缓存重用，2小时滑动过期
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool._channels">
+            <summary>
+            缓存中的信道
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool._lock">
+            <summary>
+            同步锁
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool.#ctor">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool.GetChannel(System.Uri)">
+            <summary>
+            通过端点获取信道，如果有缓存则从缓存中获取，key为endpoint
+            </summary>
+            <param name="endpoint">端点地址</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool.GetChannel(System.Uri,Grpc.Core.ChannelCredentials)">
+            <summary>
+            通过端点获取信道，如果有缓存则从缓存中获取，key为endpoint
+            </summary>
+            <param name="endpoint">端点地址</param>
+            <param name="credentials">证书信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool.GetChannelAsync(System.Uri,Grpc.Core.ChannelCredentials)">
+            <summary>
+             通过端点获取信道，如果有缓存则从缓存中获取，key为endpoint
+            </summary>
+            <param name="endpoint">端点地址</param>
+            <param name="credentials">证书信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool.GetChannelAsync(System.Uri)">
+            <summary>
+             通过端点获取信道，如果有缓存则从缓存中获取，key为endpoint
+            </summary>
+            <param name="endpoint">端点地址</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool.GetChannelFromDict(System.Uri,Grpc.Core.ChannelCredentials)">
+            <summary>
+            通过端点获取信道，如果有缓存则从缓存中获取，key为endpoint
+            </summary>
+            <param name="endpoint">端点地址</param>
+            <param name="credentials">证书信息</param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.GrpcClientHelper.GrpcClientPool`1">
+            <summary>
+            Grpc客户端池子，用于客户端缓存重用，2小时滑动过期
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:NetCoreStudy.Core.GrpcClientHelper.GrpcClientPool`1._chanelPool">
+            <summary>
+            信道池子
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.GrpcClientHelper.GrpcClientPool`1._clients">
+            <summary>
+            客户端池子
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.GrpcClientHelper.GrpcClientPool`1._lock">
+            <summary>
+            同步锁
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcClientPool`1.#ctor(NetCoreStudy.Core.GrpcClientHelper.GrpcChannelPool)">
+            <summary>
+            初始化
+            </summary>
+            <param name="chanelPool"></param>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcClientPool`1.GetClient(System.Uri)">
+            <summary>
+            通过地址获取GrpcClient对象
+            </summary>
+            <param name="endpoint">端点地址</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcClientPool`1.GetClientFromDict(System.Uri)">
+            <summary>
+            通过地址获取GrpcClient对象
+            </summary>
+            <param name="endpoint">端点地址</param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.GrpcClientHelper.GrpcClientServiceCollectionExtensions">
+            <summary>
+            Grpc客户端工厂扩展方法
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcClientServiceCollectionExtensions.AddSmartGrpcClientFactory(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            添加客户端工厂服务
+            注册SmartGrpcClientFactory单例,GrpcClientPool单例,GrpcChannelPool单例,以及IGrpcTargetAddressResolver默认实现
+            </summary>
+            <param name="serviceCollection"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.GrpcClientHelper.GrpcTargetAddressResolverDefault">
+            <summary>
+            Grpc连接地址获取默认实现类
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.GrpcTargetAddressResolverDefault.GetGrpcTargetAddress(System.String)">
+            <summary>
+            获取Grpc服务连接地址
+            </summary>
+            <param name="orgCode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.GrpcClientHelper.IGrpcTargetAddressResolver">
+            <summary>
+            Grpc连接地址获取接口
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.IGrpcTargetAddressResolver.GetGrpcTargetAddress(System.String)">
+            <summary>
+            通过OrgCode获取Grpc服务连接地址
+            </summary>
+            <param name="orgCode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.GrpcClientHelper.SmartGrpcClientFactory`1">
+            <summary>
+            Grpc服务客户端工厂，通过缓存重用客户端与信道
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:NetCoreStudy.Core.GrpcClientHelper.SmartGrpcClientFactory`1._clientPool">
+            <summary>
+            客户端池子
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.GrpcClientHelper.SmartGrpcClientFactory`1._grpcTargetResolver">
+            <summary>
+            grpc服务地址获取器
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.SmartGrpcClientFactory`1.#ctor(NetCoreStudy.Core.GrpcClientHelper.GrpcClientPool{`0},NetCoreStudy.Core.GrpcClientHelper.IGrpcTargetAddressResolver)">
+            <summary>
+            服务初始化
+            </summary>
+            <param name="clientPool"></param>
+            <param name="grpcTargetResolver"></param>
+        </member>
+        <member name="M:NetCoreStudy.Core.GrpcClientHelper.SmartGrpcClientFactory`1.GetGrpcClient(System.String)">
+            <summary>
+            通过OrgCode获取客户端对象
+            通过OrgCode获取服务地址，再根据服务地址从缓存中获取Client对象
+            </summary>
+            <param name="orgCode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.JwtAuthorization.ISmartJwtFactory">
+            <summary>
+            Jwt Token服务接口
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.JwtAuthorization.ISmartJwtFactory.GenerateToken(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Boolean)">
+            <summary>
+            通过Claims获取Token
+            </summary>
+            <param name="claims">用户信息</param>
+            <param name="needRefreshToken">是否需要RefreshToken</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.JwtAuthorization.ISmartJwtFactory.RefreshToken(System.String)">
+            <summary>
+            刷新Token
+            </summary>
+            <param name="oldAccessToken">需要刷新的Token</param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.JwtAuthorization.JwtResponseToken">
+            <summary>
+            Token信息描述
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.JwtResponseToken.Token">
+            <summary>
+            Token值
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.JwtResponseToken.TokenExpiredAt">
+            <summary>
+            Token过期时间
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.JwtResponseToken.RefreshToken">
+            <summary>
+            RefreshToken
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.JwtResponseToken.RefreshTokenExpireAt">
+            <summary>
+            RefreshToken过期时间
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.JwtAuthorization.SmartJwtFactory">
+            <summary>
+            Jwt Token服务实现类
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.JwtAuthorization.SmartJwtFactory._jwtOptions">
+            <summary>
+            配置信息
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.JwtAuthorization.SmartJwtFactory.#ctor(Microsoft.Extensions.Options.IOptions{NetCoreStudy.Core.JwtAuthorization.SmartJwtOptions})">
+            <summary>
+            初始化配置
+            </summary>
+            <param name="jwtOptions"></param>
+        </member>
+        <member name="M:NetCoreStudy.Core.JwtAuthorization.SmartJwtFactory.GenerateToken(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Boolean)">
+            <summary>
+            通过Claims获取token信息
+            </summary>
+            <param name="claims">用户信息</param>
+            <param name="needRefreshToken">是否需要RefreshToken</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.JwtAuthorization.SmartJwtFactory.RefreshToken(System.String)">
+            <summary>
+            刷新Token
+            </summary>
+            <param name="oldAccessToken">需要刷新的Token</param>
+            <returns></returns>
+        </member>
+        <member name="T:NetCoreStudy.Core.JwtAuthorization.SmartJwtOptions">
+            <summary>
+            Jwt配置信息
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.SmartJwtOptions.Issuer">
+            <summary>
+            颁发者
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.SmartJwtOptions.Subject">
+            <summary>
+            主题
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.SmartJwtOptions.Audience">
+            <summary>
+            参与者
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.SmartJwtOptions.PrivateKey">
+            <summary>
+            私钥
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.SmartJwtOptions.PublicKey">
+            <summary>
+            公钥
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.SmartJwtOptions.TokenExpireSecs">
+            <summary>
+            Token设置过期时间，单位秒，默认7200
+            </summary>
+        </member>
+        <member name="P:NetCoreStudy.Core.JwtAuthorization.SmartJwtOptions.RefreshTokenExpireSecs">
+            <summary>
+            RefreshToken设置过期时间，单位秒，默认86400
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Redis.IRedisCacheManager">
+            <summary>
+            Redis缓存接口
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.IRedisCacheManager.GetConnection">
+            <summary>
+            获取连接
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.IRedisCacheManager.GetDatabase">
+            <summary>
+            获取默认数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.IRedisCacheManager.Clear">
+            <summary>
+            清除数据
+            </summary>
+        </member>
+        <member name="T:NetCoreStudy.Core.Redis.RedisCacheManager">
+            <summary>
+            Redis缓存管理器
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.Redis.RedisCacheManager._redisCacheOptions">
+            <summary>
+            redis缓存配置项
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.Redis.RedisCacheManager._redisConnection">
+            <summary>
+            redis连接对象
+            </summary>
+        </member>
+        <member name="F:NetCoreStudy.Core.Redis.RedisCacheManager.redisConnectionLock">
+            <summary>
+            redis同步锁
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.RedisCacheManager.#ctor(Microsoft.Extensions.Options.IOptions{NetCoreStudy.Core.Redis.RedisCacheOptions})">
+            <summary>
+            初始化
+            </summary>
+            <param name="redisCacheOptions"></param>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.RedisCacheManager.GetRedisConnection">
+            <summary>
+            获取redisConnection对象单例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.RedisCacheManager.Clear">
+            <summary>
+            清除
+            </summary>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.RedisCacheManager.GetConnection">
+            <summary>
+            获取Redis连接对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.RedisCacheManager.GetDatabase">
+            <summary>
+            获取默认数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.RedisCacheServiceCollectionExtensions.AddRedisCacheManager(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{NetCoreStudy.Core.Redis.RedisCacheOptions})">
+            <summary>
+            添加RedisCacheManager
+            </summary>
+            <param name="serviceCollection"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.SerializeHelper.Serialize(System.Object)">
+            <summary>
+            序列化
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.Redis.SerializeHelper.Deserialize``1(System.Byte[])">
+            <summary>
+            反序列化
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.Core.TaskHandler.#ctor(System.Action,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="action"></param>
+            <param name="time"></param>
+        </member>
+        <member name="M:NetCoreStudy.Core.TaskHandler.DoTask(System.Object,System.Timers.ElapsedEventArgs)">
+            <summary>
+            
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:ApolloOption.OptionRegister.ConfigInitAndBindChange(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.Type)">
+            <summary>
+            初始化全局配置项并绑定Change事件 Apollo
+            将Option绑定到全局变量中
+            </summary>
+            <param name="services"></param>
+            <param name="Configuration"></param>
+            <param name="ConfigType"></param>
+        </member>
+        <member name="M:ApolloOption.OptionRegister.BindOnchangeEvent``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.Type,System.String)">
+            <summary>
+            赋予初值和绑定onchang事件
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="services"></param>
+            <param name="Configuration"></param>
+            <param name="ConfigType"></param>
+            <param name="propertyTypeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApolloOption.OptionRegister.ConsulConfigInit(Microsoft.Extensions.Configuration.IConfigurationRoot,System.Type)">
+            <summary>
+            Consul配置中心的监听赋值事件
+            </summary>
+        </member>
+        <member name="M:ApolloOption.OptionRegister.ConfigInit``1(Microsoft.Extensions.Configuration.IConfigurationRoot,System.Type,System.String)">
+            <summary>
+            递归获取节点值，向上传递
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="configRoot"></param>
+            <param name="propertyType"></param>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApolloOption.OptionRegister.GetArrayElementType(System.Type)">
+            <summary>
+            获取数组成员的类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
