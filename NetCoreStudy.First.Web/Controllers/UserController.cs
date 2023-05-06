@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreStudy.First.Domain;
@@ -33,7 +34,7 @@ namespace NetCoreStudy.First.Web.Controllers
         }
 
         [HttpPut]
-      //  [UnitOfWork(typeof(UserDbContext))]
+        //  [UnitOfWork(typeof(UserDbContext))]
         public async Task<IActionResult> LoginByPhoneAndPwd(LoginByPhoneAndPwdRequest req)
         {
             if (req.password.Length <= 3)

@@ -48,7 +48,7 @@ namespace NetCoreStudy.First.EFCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -73,7 +73,7 @@ namespace NetCoreStudy.First.EFCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedDateTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Message")
                         .HasColumnType("text");

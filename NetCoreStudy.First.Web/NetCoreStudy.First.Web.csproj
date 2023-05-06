@@ -5,10 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetCore.CAP" Version="6.2.1" />
     <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="6.2.1" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="6.2.1" />
     <PackageReference Include="ExpressionTreeToString" Version="3.4.71" />
+    <PackageReference Include="IdentityServer4" Version="4.1.2" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="4.1.2" />
+    <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="4.1.2" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.10" NoWarn="NU1605" />
@@ -18,11 +22,15 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.24.0" />
+    <PackageReference Include="Winton.Extensions.Configuration.Consul" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NetCoreStudy.First.BasicModel\NetCoreStudy.First.BasicModel.csproj" />
+    <ProjectReference Include="..\NetCoreStudy.First.Common\NetCoreStudy.First.Common.csproj" />
     <ProjectReference Include="..\NetCoreStudy.First.Database.Migration\NetCoreStudy.First.Domain.csproj" />
     <ProjectReference Include="..\NetCoreStudy.First.EFCore\NetCoreStudy.First.EFCore.csproj" />
     <ProjectReference Include="..\NetCoreStudy.First.Utility\NetCoreStudy.First.Utility.csproj" />
