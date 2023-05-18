@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\IdentityController.cs" />
+    <Compile Remove="Controllers\UserController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="6.2.1" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="6.2.1" />
     <PackageReference Include="ExpressionTreeToString" Version="3.4.71" />
@@ -35,5 +40,7 @@
     <ProjectReference Include="..\NetCoreStudy.First.EFCore\NetCoreStudy.First.EFCore.csproj" />
     <ProjectReference Include="..\NetCoreStudy.First.Utility\NetCoreStudy.First.Utility.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

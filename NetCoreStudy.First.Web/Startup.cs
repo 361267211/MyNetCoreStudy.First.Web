@@ -61,43 +61,43 @@ namespace NetCoreStudy.First.Web
                 options.UseNpgsql(GlobalConfigOption.DbContext.DbConnection);
             });
 
-            services.AddIdentityCore<MyUser>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 6;
-                options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
-                options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
-            });
+            //services.AddIdentityCore<MyUser>(options =>
+            //{
+            //    options.Password.RequireDigit = false;
+            //    options.Password.RequireLowercase = false;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequiredLength = 6;
+            //    options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+            //    options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
+            //});
 ;
 
-            services.AddIdentity<MyUser, MyRole>()
-                     .AddEntityFrameworkStores<ApplicationDbContext>()
-                     .AddDefaultTokenProviders()
-                     .AddRoleManager<RoleManager<MyRole>>()
-                     .AddUserManager<UserManager<MyUser>>()
-                     .AddSignInManager<SignInManager<MyUser>>()
-                     ;
+            //services.AddIdentity<MyUser, MyRole>()
+            //         .AddEntityFrameworkStores<ApplicationDbContext>()
+            //         .AddDefaultTokenProviders()
+            //         .AddRoleManager<RoleManager<MyRole>>()
+            //         .AddUserManager<UserManager<MyUser>>()
+            //         .AddSignInManager<SignInManager<MyUser>>()
+            //         ;
 
-            services.AddIdentityServer().AddConfigurationStore(options =>
-                   {
-                       options.ConfigureDbContext = b => b.UseNpgsql(GlobalConfigOption.DbContext.DbConnection,
-                           sql => sql.MigrationsAssembly(migrationsAssembly));
-                   })
-                   .AddOperationalStore(options =>
-                   {
-                       options.ConfigureDbContext = b => b.UseNpgsql(GlobalConfigOption.DbContext.DbConnection,
-                           sql => sql.MigrationsAssembly(migrationsAssembly));
-                   })
-                   .AddDeveloperSigningCredential()  //默认的生成的密钥（运行后，会在项目根目录下生成文件 tempkey.jwk）
-                  // .AddInMemoryClients(Config.Clients) //注册客户端
-                 //  .AddInMemoryApiScopes(Config.ApiScopes) //注册api访问范围
-                   .AddAspNetIdentity<MyUser>()
-                //   .AddTestUsers(Config.Users) //注册资源拥有者
-                 //  .AddInMemoryIdentityResources(Config.IdentityResources) //用户的身份资源信息（例如：显示昵称，头像，等等信息）
-                   ; 
+            //services.AddIdentityServer().AddConfigurationStore(options =>
+            //       {
+            //           options.ConfigureDbContext = b => b.UseNpgsql(GlobalConfigOption.DbContext.DbConnection,
+            //               sql => sql.MigrationsAssembly(migrationsAssembly));
+            //       })
+            //       .AddOperationalStore(options =>
+            //       {
+            //           options.ConfigureDbContext = b => b.UseNpgsql(GlobalConfigOption.DbContext.DbConnection,
+            //               sql => sql.MigrationsAssembly(migrationsAssembly));
+            //       })
+            //       .AddDeveloperSigningCredential()  //默认的生成的密钥（运行后，会在项目根目录下生成文件 tempkey.jwk）
+            //      // .AddInMemoryClients(Config.Clients) //注册客户端
+            //     //  .AddInMemoryApiScopes(Config.ApiScopes) //注册api访问范围
+            //       .AddAspNetIdentity<MyUser>()
+            //    //   .AddTestUsers(Config.Users) //注册资源拥有者
+            //     //  .AddInMemoryIdentityResources(Config.IdentityResources) //用户的身份资源信息（例如：显示昵称，头像，等等信息）
+            //       ; 
 
 
 
@@ -127,7 +127,7 @@ namespace NetCoreStudy.First.Web
 
 
             //JWT
-            services.Configure<JWTSettings>(Configuration.GetSection("JWT"));
+            //services.Configure<JWTSettings>(Configuration.GetSection("JWT"));
             /* services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  .AddJwtBearer(opt =>
                  {
@@ -158,15 +158,16 @@ namespace NetCoreStudy.First.Web
                      };
                  });*/
 
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
+             services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", config =>
                 {
-                    options.Authority = "http://localhost:5000";    //配置Identityserver的授权地址
-                    options.RequireHttpsMetadata = false;           //不需要https    
-                    options.ApiName = "api1";                        //api的name，需要和config的名称相同
+                    config.Authority = "https://localhost:5001";
+                    config.Audience = "api1";
+
+
                 });
 
-            services.AddAuthorization();
+           // services.AddAuthorization();
 
             //cap
             services.AddCap(c =>
@@ -245,30 +246,47 @@ namespace NetCoreStudy.First.Web
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                var scheme = new OpenApiSecurityScheme()
+                //Bearer 的scheme定义
+                var securityScheme = new OpenApiSecurityScheme()
                 {
-                    Description = "Authorization header. \r\nExample: 'Bearer 12345abcdef'",
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Authorization"
-                    },
-                    Scheme = "oauth2",
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
+                    //参数添加在头部
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
+                    //使用Authorize头部
+                    Type = SecuritySchemeType.Http,
+                    //内容为以 bearer开头
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
                 };
-                c.AddSecurityDefinition("Authorization", scheme);
-                var requirement = new OpenApiSecurityRequirement();
-                requirement[scheme] = new List<string>();
-                c.AddSecurityRequirement(requirement);
+
+                //把所有方法配置为增加bearer头部信息
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "bearerAuth"
+                                }
+                            },
+                            new string[] {}
+                    }
+                };
+
+                //注册到swagger中
+                c.AddSecurityDefinition("bearerAuth", securityScheme);
+                c.AddSecurityRequirement(securityRequirement);
             });
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseDatabaseInitialize();
+           // app.UseDatabaseInitialize();
 
 
             if (env.IsDevelopment())
@@ -288,7 +306,7 @@ namespace NetCoreStudy.First.Web
             // CAP
             //app.UseCap();
 
-            app.UseIdentityServer();//使用IdentityServer中间件
+            //app.UseIdentityServer();//使用IdentityServer中间件
 
             app.UseRouting();
 
