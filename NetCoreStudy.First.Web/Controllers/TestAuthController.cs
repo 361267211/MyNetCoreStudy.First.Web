@@ -9,7 +9,7 @@ namespace NetCoreStudy.First.Web.Controllers
     public class TestAuthController : ControllerBase
     {
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Supper Admin")]
         public string getTestResult()
         {
             return "测试成功";
