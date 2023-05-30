@@ -55,11 +55,8 @@ namespace NetCoreStudy.First.Web
             var migrationsAssembly = typeof(UserDbContext).GetTypeInfo().Assembly.GetName().Name;
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordExt>();//自定义资源所有者密码模式认证
 
+ 
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseNpgsql(GlobalConfigOption.DbContext.DbConnection);
-            });
 
             //services.AddIdentityCore<MyUser>(options =>
             //{
@@ -105,10 +102,12 @@ namespace NetCoreStudy.First.Web
 
 
             //EF
+            //todo：数据库上下文配置，暂时禁用
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//pg数据库存在的时区问题需要通过本行代码解决
             services.AddDbContext<UserDbContext>(opt =>
             {
                 opt.UseNpgsql(GlobalConfigOption.DbContext.DbConnection);
+                opt.UseNpgsql("https://localhost:5001");
             });
 
             /*            //id4
@@ -167,47 +166,63 @@ namespace NetCoreStudy.First.Web
 
                 });
 
-           // services.AddAuthorization();
+            // services.AddAuthorization();
 
             //cap
-            services.AddCap(c =>
+            //todo:暂时禁用
             {
-                DotNetCore.CAP.CapOptions capOptions = c.UseEntityFramework<UserDbContext>();
-
-                c.UsePostgreSql(connectionString: GlobalConfigOption.DbContext.DbConnection);
-
-                c.FailedRetryCount = 3;//触发失败回调的重试次数，注意与最大重试次数区分
-                c.FailedRetryInterval = 2;//重试间隔
-                c.SucceedMessageExpiredAfter = 60 * 60;//成功消息的保存时间
-                c.FailedThresholdCallback = async e =>
-                 {
-                     string message = "";
-                     foreach (var item in e.Message.Headers)
-                     {
-                         message += ($"key:{item.Key},value:{item.Value}\r\n");
-                     }
-                     await System.IO.File.AppendAllTextAsync("d:/error.log", $"失败了,报错信息\r\n{message}");
-                 };
-                c.UseRabbitMQ(mq =>
+/*
+                services.AddCap(c =>
                 {
-                    mq.HostName = GlobalConfigOption.Cap.RabbitMQ.HostName; //RabitMq服务器地址，依实际情况修改此地址
-                    mq.Port = GlobalConfigOption.Cap.RabbitMQ.Port;
-                    mq.UserName = GlobalConfigOption.Cap.RabbitMQ.UserName;  //RabbitMq账号
-                    mq.Password = GlobalConfigOption.Cap.RabbitMQ.Password;  //RabbitMq密码
-                                                                             //指定Topic exchange名称，不指定的话会用默认的
-                    mq.ExchangeName = "cap.text.exchange.zzq";//交换的名称
+                    DotNetCore.CAP.CapOptions capOptions = c.UseEntityFramework<UserDbContext>();
 
+                    c.UsePostgreSql(connectionString: GlobalConfigOption.DbContext.DbConnection);
+
+                    c.FailedRetryCount = 3;//触发失败回调的重试次数，注意与最大重试次数区分
+                    c.FailedRetryInterval = 2;//重试间隔
+                    c.SucceedMessageExpiredAfter = 60 * 60;//成功消息的保存时间
+                    c.FailedThresholdCallback = async e =>
+                    {
+                        string message = "";
+                        foreach (var item in e.Message.Headers)
+                        {
+                            message += ($"key:{item.Key},value:{item.Value}\r\n");
+                        }
+                        await System.IO.File.AppendAllTextAsync("d:/error.log", $"失败了,报错信息\r\n{message}");
+                    };
+                    c.UseRabbitMQ(mq =>
+                    {
+                        mq.HostName = GlobalConfigOption.Cap.RabbitMQ.HostName; //RabitMq服务器地址，依实际情况修改此地址
+                        mq.Port = GlobalConfigOption.Cap.RabbitMQ.Port;
+                        mq.UserName = GlobalConfigOption.Cap.RabbitMQ.UserName;  //RabbitMq账号
+                        mq.Password = GlobalConfigOption.Cap.RabbitMQ.Password;  //RabbitMq密码
+                                                                                 //指定Topic exchange名称，不指定的话会用默认的
+                        mq.ExchangeName = "cap.text.exchange.zzq";//交换的名称
+
+                    });
                 });
-
-            });
+*/
+            }
+             
 
             //跨域问题配置
-            string[] urls = new[] { "http://127.0.0.1:5173" };
-            services.AddCors(option =>
+            services.AddCors(options =>
             {
-                option.AddDefaultPolicy(builder => builder.WithOrigins(urls)
-                .AllowAnyMethod().AllowAnyHeader().AllowCredentials()
-                );
+                //注意：自定义的跨域策略名称,必须和Configure中的UseCors的名称必须一致
+                options.AddPolicy("apiPolicy", policy =>
+                {
+                    //1.允许跨域的来源，多个跨域来源时可以使用, 分割， policy.WithOrigins("https://127.0.0.1:5003","https://127.0.0.1:7001")
+                    //2.多个跨域来源时可以使用string[]
+                    string Origins = "http://127.0.0.1:5003";
+
+                    //policy.WithOrigins(Origins.Split(','))
+                    policy.
+                    AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(_ => true)
+                    .AllowCredentials();
+                    ;
+                });
             });
             //加入redis作为分布式缓存
             services.AddStackExchangeRedisCache(option =>
@@ -298,7 +313,6 @@ namespace NetCoreStudy.First.Web
 
             //    app.UseMiddleware<CheckAndParsingMiddleware>();
 
-            app.UseCors();
 
             app.UseHttpsRedirection();
 
@@ -309,6 +323,8 @@ namespace NetCoreStudy.First.Web
             //app.UseIdentityServer();//使用IdentityServer中间件
 
             app.UseRouting();
+
+            app.UseCors("apiPolicy");
 
             app.UseAuthentication();
 

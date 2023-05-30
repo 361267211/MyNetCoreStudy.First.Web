@@ -24,39 +24,42 @@ namespace NetCoreStudy.First.Web
             Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration(configureDelegate: (hostBuilderContext, configBuilder) =>
                           {
-                              var baseConfig = configBuilder.Build();//configRoot 生命周期是瞬时的
-
-
-                              if (baseConfig["Setup:ConfigType"] == "Consul")
                               {
-                                  var configSchema = baseConfig["Setup:ConsulConfigSchema"];
-                                  var configAddress = baseConfig["Setup:ConsulConfigAddress"];
-                                  //使用consul客户端加载consul配置
-                                  configBuilder.AddConsul(configSchema, options =>
+                                  //todo:配置中心，暂时禁用
+/*
+                                  var baseConfig = configBuilder.Build();//configRoot 生命周期是瞬时的
+                                  if (baseConfig["Setup:ConfigType"] == "Consul")
                                   {
-                                      options.ConsulConfigurationOptions = cco =>
+                                      var configSchema = baseConfig["Setup:ConsulConfigSchema"];
+                                      var configAddress = baseConfig["Setup:ConsulConfigAddress"];
+                                      //使用consul客户端加载consul配置
+                                      configBuilder.AddConsul(configSchema, options =>
                                       {
-                                          cco.Address = new Uri(configAddress);
-                                      };
-                                      //配置热更新 动态加载
-                                      options.ReloadOnChange = true;
-                                      options.Optional = true;
-                                  });
+                                          options.ConsulConfigurationOptions = cco =>
+                                          {
+                                              cco.Address = new Uri(configAddress);
+                                          };
+                                          //配置热更新 动态加载
+                                          options.ReloadOnChange = true;
+                                          options.Optional = true;
+                                      });
 
-                                  var finalConfig = configBuilder.Build();//configRoot1 生命周期是瞬时的
-                                  OptionRegister.ConsulConfigInit(finalConfig, typeof(GlobalConfigOption));
-                                  ChangeToken.OnChange(() => finalConfig.GetReloadToken(), () =>
-                                  {
-                                      //Console.WriteLine("监听到了");
+                                      var finalConfig = configBuilder.Build();//configRoot1 生命周期是瞬时的
                                       OptionRegister.ConsulConfigInit(finalConfig, typeof(GlobalConfigOption));
-                                  });
+                                      ChangeToken.OnChange(() => finalConfig.GetReloadToken(), () =>
+                                      {
+                                          //Console.WriteLine("监听到了");
+                                          OptionRegister.ConsulConfigInit(finalConfig, typeof(GlobalConfigOption));
+                                      });
 
 
-                              }
-                              else if (baseConfig["Setup:ConfigType"] == "Apollo")
-                              {
-                                  // configBuilder.AddApollo(baseConfig.GetSection("Apollo"));
-                              }
+                                  }
+                                  else if (baseConfig["Setup:ConfigType"] == "Apollo")
+                                  {
+                                      // configBuilder.AddApollo(baseConfig.GetSection("Apollo"));
+                                  }
+*/
+                              }                             
                           })
             .ConfigureWebHostDefaults(webBuilder =>
             {
