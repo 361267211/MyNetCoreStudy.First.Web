@@ -11,18 +11,13 @@ namespace NetCoreStudy.First.Domain.Entity
 {
     public class UserLoginHistory: IAggregatrRoot
     {
-        public long  Id { get; init; }
-
+        public long Id { get; init; }
         public Guid? UserId { get; init; }
-
-        public PhoneNumber  PhoneNumber { get; init; }
+        public PhoneNumber PhoneNumber { get; init; }
         public string Message { get; init; }
         public DateTime CreatedDateTime { get; init; }
-
         private UserLoginHistory()
-        {
-
-        }
+        {}
         public UserLoginHistory(Guid? userId, PhoneNumber phoneNumber, string message )
         {
             UserId = userId;

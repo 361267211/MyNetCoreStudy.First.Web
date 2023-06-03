@@ -26,7 +26,7 @@ namespace NetCoreStudy.First.Web
                           {
                               {
                                   //todo:配置中心，暂时禁用
-/*
+
                                   var baseConfig = configBuilder.Build();//configRoot 生命周期是瞬时的
                                   if (baseConfig["Setup:ConfigType"] == "Consul")
                                   {
@@ -58,8 +58,8 @@ namespace NetCoreStudy.First.Web
                                   {
                                       // configBuilder.AddApollo(baseConfig.GetSection("Apollo"));
                                   }
-*/
-                              }                             
+
+                              }
                           })
             .ConfigureWebHostDefaults(webBuilder =>
             {

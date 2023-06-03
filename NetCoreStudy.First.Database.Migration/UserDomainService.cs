@@ -21,6 +21,12 @@ namespace NetCoreStudy.First.Domain
             _serviceProvider = serviceProvider;
         }
 
+        /// <summary>
+        /// 检查密码
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public async Task<UserAccessResult> CheckPassword(PhoneNumber phoneNumber,string password)
         {
             UserAccessResult result;

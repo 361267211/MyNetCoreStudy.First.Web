@@ -107,13 +107,13 @@ namespace NetCoreStudy.First.Web
             services.AddDbContext<UserDbContext>(opt =>
             {
                 opt.UseNpgsql(GlobalConfigOption.DbContext.DbConnection);
-                opt.UseNpgsql("https://localhost:5001");
+              //  opt.UseNpgsql("https://localhost:5001");
             });
 
-            /*            //id4
-                        services.AddScoped<UserManager<IdentityUser>>();
-                        services.AddScoped<RoleManager<IdentityRole>>();
-                         */
+            //id4
+            services.AddScoped<UserManager<MyUser>>();
+            services.AddScoped<RoleManager<MyRole>>();
+
             //²Ö´¢
             services.AddScoped<IUserDomainRepository, UserDomainRepository>();
 

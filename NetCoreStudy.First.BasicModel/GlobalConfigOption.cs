@@ -8,69 +8,70 @@
     public static  class GlobalConfigOption
     {
         /// <summary>
-        /// 
+        /// 数据库上下文
         /// </summary>
         public static DbContext DbContext { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static Cap Cap { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static ServiceRegist ServiceRegist { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static GrpcRegist GrpcRegist { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static RedisServer RedisServer { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static JwtAuth JwtAuth { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static Exceptionless Exceptionless { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static Serilog Serilog { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static SM2Key SM2Key { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string FabioUrl { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static OldSite OldSite { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string ApiUrl { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string GrpcUrl { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string ApiPort { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static string GrpcPort { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static AppBaseConfig AppBaseConfig { get; set; }
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static Cap Cap { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static ServiceRegist ServiceRegist { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static GrpcRegist GrpcRegist { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static RedisServer RedisServer { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static JwtAuth JwtAuth { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static Exceptionless Exceptionless { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static Serilog Serilog { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static SM2Key SM2Key { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static string FabioUrl { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static OldSite OldSite { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static string ApiUrl { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static string GrpcUrl { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static string ApiPort { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static string GrpcPort { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public static AppBaseConfig AppBaseConfig { get; set; }
     }
 
     public class DbContext
