@@ -52,31 +52,32 @@ namespace NetCoreStudy.First.Web
         {
 
             //ID4
-            var migrationsAssembly = typeof(UserDbContext).GetTypeInfo().Assembly.GetName().Name;
+        //    var migrationsAssembly = typeof(UserDbContext).GetTypeInfo().Assembly.GetName().Name;
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordExt>();//自定义资源所有者密码模式认证
 
- 
 
 
-            //services.AddIdentityCore<MyUser>(options =>
-            //{
-            //    options.Password.RequireDigit = false;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequiredLength = 6;
-            //    options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
-            //    options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
-            //});
-;
 
-            //services.AddIdentity<MyUser, MyRole>()
-            //         .AddEntityFrameworkStores<ApplicationDbContext>()
-            //         .AddDefaultTokenProviders()
-            //         .AddRoleManager<RoleManager<MyRole>>()
-            //         .AddUserManager<UserManager<MyUser>>()
-            //         .AddSignInManager<SignInManager<MyUser>>()
-            //         ;
+            services.AddIdentityCore<MyUser>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+                options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
+            });
+            ;
+
+            services.AddIdentity<MyUser, MyRole>()
+                     .AddEntityFrameworkStores<ApplicationDbContext>()
+                     .AddDefaultTokenProviders()
+                     .AddRoleManager<RoleManager<MyRole>>()
+                     .AddUserManager<CustomUserManager<MyUser>>()
+                     .AddSignInManager<SignInManager<MyUser>>()
+                     .AddUserStore<CustomUserStore<MyUser>>()
+                     ;
 
             //services.AddIdentityServer().AddConfigurationStore(options =>
             //       {
@@ -104,24 +105,29 @@ namespace NetCoreStudy.First.Web
             //EF
             //todo：数据库上下文配置，暂时禁用
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//pg数据库存在的时区问题需要通过本行代码解决
-            services.AddDbContext<UserDbContext>(opt =>
+            services.AddDbContext<ApplicationDbContext>(opt =>
             {
                 opt.UseNpgsql(GlobalConfigOption.DbContext.DbConnection);
               //  opt.UseNpgsql("https://localhost:5001");
             });
 
             //id4
-            services.AddScoped<UserManager<MyUser>>();
-            services.AddScoped<RoleManager<MyRole>>();
+            services.AddScoped<MyUser>();
+
+            //services.AddScoped<UserManager<MyUser>>();
+            //services.AddScoped<RoleManager<MyRole>>();
+
+            services.AddScoped(typeof(IUserStore<>), typeof(CustomUserStore<>));
+            services.AddScoped<CustomUserManager<MyUser>>();
 
             //仓储
-            services.AddScoped<IUserDomainRepository, UserDomainRepository>();
+            //services.AddScoped<IUserDomainRepository, UserDomainRepository>();
 
             //分布式缓存
             services.AddScoped<IDistributedCacheHelper, DistributedCacheHelper>();
 
             //应用服务
-            services.AddScoped<UserDomainService>();
+            //services.AddScoped<UserDomainService>();
 
 
 

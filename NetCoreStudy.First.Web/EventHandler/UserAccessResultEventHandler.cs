@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace NetCoreStudy.First.Web.EventHandler
 {
-    public class UserAccessResultEventHandler : INotificationHandler<UserAccessResultEvent>
+
+    //todo:此处暂时注释了继承，后期需要重新写
+    public class UserAccessResultEventHandler /*: INotificationHandler<UserAccessResultEvent>*/
     {
         private readonly IUserDomainRepository _userRepository;
         private readonly UserDbContext _userDb;
