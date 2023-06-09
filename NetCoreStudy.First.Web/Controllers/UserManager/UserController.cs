@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NetCoreStudy.First.Domain;
+using NetCoreStudy.First.Domain.Entity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,11 +16,13 @@ namespace NetCoreStudy.First.Web.Controllers.UserManager
     {
         private readonly UserManager<MyUser> _userManager;
         private readonly CustomUserManager<MyUser> _customUserManager;
+        private readonly IUserManagerService _userManagerService;
 
-        public UserController(UserManager<MyUser> userManager, CustomUserManager<MyUser> customUserManager)
+        public UserController(UserManager<MyUser> userManager, CustomUserManager<MyUser> customUserManager, IUserManagerService userManagerService)
         {
             _userManager = userManager;
             _customUserManager = customUserManager;
+            _userManagerService = userManagerService;
         }
 
         [HttpGet]
@@ -50,6 +54,18 @@ namespace NetCoreStudy.First.Web.Controllers.UserManager
                 var errors = result.Errors;
             }
 
+        }
+
+        /// <summary>
+        /// 根据查询条件查询用户
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<List<MyUser>> getUsersByCondition(UserQueryCondition userQueryCondition)
+        {
+           
+            var result = await _userManagerService.GetUsersByDynamicConditionAsync(userQueryCondition);
+            return result;
         }
     }
 }

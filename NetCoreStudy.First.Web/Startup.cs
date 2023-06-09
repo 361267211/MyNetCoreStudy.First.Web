@@ -127,7 +127,8 @@ namespace NetCoreStudy.First.Web
             services.AddScoped<IDistributedCacheHelper, DistributedCacheHelper>();
 
             //应用服务
-            //services.AddScoped<UserDomainService>();
+            services.AddScoped<IUserManagerService, UserManagerService>();
+            services.AddScoped<IUserManagerRepository, UserManagerRepository>();
 
 
 
@@ -163,7 +164,7 @@ namespace NetCoreStudy.First.Web
                      };
                  });*/
 
-             services.AddAuthentication("Bearer")
+            services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", config =>
                 {
                     config.Authority = "https://localhost:5001";

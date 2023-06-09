@@ -9,6 +9,14 @@ namespace NetCoreStudy.First.Utility
 {
     public static class DynamicExpressionExtension
     {
+        /// <summary>
+        /// get IQueryable by fiedName and field value
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="quryable"></param>
+        /// <param name="propName"></param>
+        /// <param name="value"></param>
+        /// <returns>new queryable result</returns>
         public static IQueryable<TModel> CreateExp<TModel>(this IQueryable<TModel> quryable,  string propName, object value) where TModel : class
         {
             //取model的类型
