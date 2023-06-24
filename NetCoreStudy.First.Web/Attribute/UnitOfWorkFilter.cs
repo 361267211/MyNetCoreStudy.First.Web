@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Web
+namespace NetCoreStudy.First.Web.Attr
 {
     public class UnitOfWorkFilter : IAsyncActionFilter
     {

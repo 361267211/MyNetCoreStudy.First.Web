@@ -1,4 +1,5 @@
 using ApolloOption;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -22,6 +23,7 @@ namespace NetCoreStudy.First.Web
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+            .UseServiceProviderFactory(new AutofacServiceProviderFactory())//�滻ΪAutofac IOC
             .ConfigureAppConfiguration(configureDelegate: (hostBuilderContext, configBuilder) =>
                           {
                               {

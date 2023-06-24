@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NetCoreStudy.First.Web.IdentityService4;
 using System.Linq;
 
-namespace NetCoreStudy.First.Web
+namespace NetCoreStudy.First.Web.Extension
 {
     public static class DatabaseConfigExtensions
     {

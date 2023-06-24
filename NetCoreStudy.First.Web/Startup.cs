@@ -1,3 +1,6 @@
+using Autofac;
+using Autofac.Core;
+using Autofac.Extensions.DependencyInjection;
 using IdentityServer.EFCore.Entity;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Test;
@@ -21,6 +24,7 @@ using NetCoreStudy.First.Domain;
 using NetCoreStudy.First.Domain.Entity;
 using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.Utility.DistributedCache;
+using NetCoreStudy.First.Web.AutofacIOC;
 using NetCoreStudy.First.Web.Filter;
 using NetCoreStudy.First.Web.IdentityService4;
 using NetCoreStudy.First.Web.JWT;
@@ -47,12 +51,27 @@ namespace NetCoreStudy.First.Web
 
         public IConfiguration Configuration { get; }
 
+        // ConfigureContainer is where you can register things directly
+        // with Autofac. This runs after ConfigureServices so the things
+        // here will override registrations made in ConfigureServices.
+        // Don't build the container; that gets done for you by the factory.
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+
+            // Register your own things directly with Autofac here. Don't
+            // call builder.Populate(), that happens in AutofacServiceProviderFactory
+            // for you.
+            builder.RegisterModule(new FelixAutofacModule());
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //注册默认容器之前注册的类
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
             //ID4
-        //    var migrationsAssembly = typeof(UserDbContext).GetTypeInfo().Assembly.GetName().Name;
+            //    var migrationsAssembly = typeof(UserDbContext).GetTypeInfo().Assembly.GetName().Name;
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordExt>();//自定义资源所有者密码模式认证
 
 

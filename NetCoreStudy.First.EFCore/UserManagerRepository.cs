@@ -27,8 +27,11 @@ namespace NetCoreStudy.First.EFCore
             {
                 query= query.CreateExp(condition.FieldName, condition.FieldValue);
             }
-            var user1 =await query.ToListAsync();
-            return user1;
+            //var user1 =await query.ToListAsync();
+
+            List<MyUser> userlist = new List<MyUser>();
+            userlist.Add(new MyUser { UserName = "666" });
+            return userlist;
         }
     }
 }
