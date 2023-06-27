@@ -4,12 +4,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreStudy.First.Domain;
-using NetCoreStudy.First.Domain.Entity;
+using NetCoreStudy.First.Domain.FxDto;
+using NetCoreStudy.First.Web.FxAttribute;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NetCoreStudy.First.Web.Controllers.UserManager
 {
+    /// <summary>
+    /// 用于管理用户信息的接口
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -61,9 +65,22 @@ namespace NetCoreStudy.First.Web.Controllers.UserManager
         /// </summary>
         /// <returns></returns>
         [HttpPut]
+        [RemoveCachAttribute(resource:"User")]
         public async Task<List<MyUser>> getUsersByCondition(UserQueryCondition userQueryCondition)
         {
            
+            var result = await _userManagerService.GetUsersByDynamicConditionAsync(userQueryCondition);
+            return result;
+        }
+
+        /// <summary>
+        /// 根据查询条件查询用户
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<List<MyUser>> UpdateUsersById(UserQueryCondition userQueryCondition)
+        {
+
             var result = await _userManagerService.GetUsersByDynamicConditionAsync(userQueryCondition);
             return result;
         }

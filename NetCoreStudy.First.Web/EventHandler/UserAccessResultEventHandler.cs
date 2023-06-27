@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using NetCoreStudy.First.Domain;
+using NetCoreStudy.First.Domain.FxRepository;
 using NetCoreStudy.First.EFCore;
 using System.Threading;
 using System.Threading.Tasks;

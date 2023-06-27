@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Domain.Entity
+namespace NetCoreStudy.First.Domain.FxDto
 {
     public class UserQueryCondition
     {

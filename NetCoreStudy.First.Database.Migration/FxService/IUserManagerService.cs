@@ -1,5 +1,6 @@
 ﻿using IdentityServer.EFCore.Entity;
 using NetCoreStudy.First.Domain.Entity;
+using NetCoreStudy.First.Domain.FxDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

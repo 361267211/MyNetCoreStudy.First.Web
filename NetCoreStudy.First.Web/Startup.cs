@@ -61,7 +61,7 @@ namespace NetCoreStudy.First.Web
             // Register your own things directly with Autofac here. Don't
             // call builder.Populate(), that happens in AutofacServiceProviderFactory
             // for you.
-            builder.RegisterModule(new FelixAutofacModule());
+            builder.RegisterModule(new FxAutofacModule());
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

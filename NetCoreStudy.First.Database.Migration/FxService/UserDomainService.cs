@@ -1,4 +1,5 @@
 ﻿using NetCoreStudy.First.Domain.Entity;
+using NetCoreStudy.First.Domain.FxRepository;
 using NetCoreStudy.First.Domain.ValueObj;
 //using StackExchange.Redis;
 using System;

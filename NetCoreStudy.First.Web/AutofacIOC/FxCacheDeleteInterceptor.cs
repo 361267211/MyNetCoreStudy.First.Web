@@ -6,10 +6,11 @@ namespace NetCoreStudy.First.Web.AutofacIOC
 {
 
     /// <summary>
-    /// 使用autofac做的缓存装饰器
+    /// 使用autofac做的缓存装饰器:改装饰器用于删除缓存
     /// </summary>
-    public class FelixAutofacCacheInterceptor : IInterceptor
+    public class FxCacheDeleteInterceptor : IInterceptor
     {
+
         public async void Intercept(IInvocation invocation)
         {
             invocation.Proceed();

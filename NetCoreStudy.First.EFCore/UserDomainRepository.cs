@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using NetCoreStudy.First.Domain;
 using NetCoreStudy.First.Domain.Entity;
+using NetCoreStudy.First.Domain.FxRepository;
 using NetCoreStudy.First.Domain.ValueObj;
 using System;
 using System.Collections.Generic;
