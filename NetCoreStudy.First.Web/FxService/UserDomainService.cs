@@ -1,6 +1,6 @@
 ﻿using NetCoreStudy.First.Domain.Entity;
-using NetCoreStudy.First.Domain.FxRepository;
 using NetCoreStudy.First.Domain.ValueObj;
+using NetCoreStudy.First.Web.FxRepository;
 //using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Domain
+namespace NetCoreStudy.First.Domain.FxService
 {
     public class UserDomainService
     {
@@ -28,19 +28,19 @@ namespace NetCoreStudy.First.Domain
         /// <param name="phoneNumber"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<UserAccessResult> CheckPassword(PhoneNumber phoneNumber,string password)
+        public async Task<UserAccessResult> CheckPassword(PhoneNumber phoneNumber, string password)
         {
             UserAccessResult result;
             var user = await _userDomainRepository.FindOneAsync(phoneNumber);
-            if (user==null)
+            if (user == null)
             {
-                result=UserAccessResult.PhoneNumberNotFound;
+                result = UserAccessResult.PhoneNumberNotFound;
             }
-            else if(IsLockOut(user))
+            else if (IsLockOut(user))
             {
                 result = UserAccessResult.Lockout;
             }
-            else if (user.HasPassword()==false)
+            else if (user.HasPassword() == false)
             {
                 result = UserAccessResult.NoPassword;
             }
@@ -50,9 +50,9 @@ namespace NetCoreStudy.First.Domain
             }
             else
             {
-                result  = UserAccessResult.PasswordError;
+                result = UserAccessResult.PasswordError;
             }
-            if (user!=null)
+            if (user != null)
             {
                 if (result == UserAccessResult.OK)
                 {
@@ -64,34 +64,34 @@ namespace NetCoreStudy.First.Domain
                 }
             }
 
-            await _userDomainRepository.PublishEventAsync(new UserAccessResultEvent(phoneNumber,result));
+            await _userDomainRepository.PublishEventAsync(new UserAccessResultEvent(phoneNumber, result));
             return result;
- 
+
         }
 
-        public async Task<CheckCodeResult> CheckCodeAsync(PhoneNumber phoneNumber,string code)
+        public async Task<CheckCodeResult> CheckCodeAsync(PhoneNumber phoneNumber, string code)
         {
-            User? user = await _userDomainRepository.FindOneAsync(phoneNumber);
-            if (user==null)
+            User user = await _userDomainRepository.FindOneAsync(phoneNumber);
+            if (user == null)
             {
                 return CheckCodeResult.PhoneNumberNotFount;
             }
             else if (IsLockOut(user))
             {
-                return CheckCodeResult.Lockout; 
+                return CheckCodeResult.Lockout;
             }
 
-            string? codeInServer = await _userDomainRepository.FindPhoneNumberCodeAsync(phoneNumber);
-            if (codeInServer==null)
+            string codeInServer = await _userDomainRepository.FindPhoneNumberCodeAsync(phoneNumber);
+            if (codeInServer == null)
             {
                 return CheckCodeResult.CodeError;
             }
-            else if (codeInServer==code)
+            else if (codeInServer == code)
             {
                 return CheckCodeResult.OK;
 
             }
-            else 
+            else
             {
                 AccessFail(user);
                 return CheckCodeResult.CodeError;
@@ -110,7 +110,7 @@ namespace NetCoreStudy.First.Domain
 
         public void AccessFail(User user)
         {
-              user.AccessFail.Fail();
+            user.AccessFail.Fail();
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using IdentityServer.EFCore.Entity;
 using Microsoft.EntityFrameworkCore;
-using NetCoreStudy.First.Domain;
-using NetCoreStudy.First.Domain.FxDto;
+using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.Utility;
+using NetCoreStudy.First.Web.FxDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.EFCore
+namespace NetCoreStudy.First.Web.FxRepository
 {
     public class UserManagerRepository : IUserManagerRepository
     {
@@ -19,12 +19,17 @@ namespace NetCoreStudy.First.EFCore
             _appUserDb = appUserDb;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queryCondition"></param>
+        /// <returns></returns>
         public async Task<List<MyUser>> GetUsersByDynamicConditionAsync(UserQueryCondition queryCondition)
         {
-            var query =  _appUserDb.Users.AsQueryable();
+            var query = _appUserDb.Users.AsQueryable();
             foreach (var condition in queryCondition.ConditionList)
             {
-                query= query.CreateExp(condition.FieldName, condition.FieldValue);
+                query = query.CreateExp(condition.FieldName, condition.FieldValue);
             }
             //var user1 =await query.ToListAsync();
 
@@ -32,6 +37,8 @@ namespace NetCoreStudy.First.EFCore
             userlist.Add(new MyUser { UserName = "666" });
             return userlist;
         }
+
+        //[RemoveCachAttribute(resource: "User")]
 
         public async Task UpdateUser(MyUserDto userDto)
         {

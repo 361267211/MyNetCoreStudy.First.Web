@@ -1,17 +1,17 @@
 ﻿using IdentityServer.EFCore.Entity;
 using NetCoreStudy.First.Domain.Entity;
-using NetCoreStudy.First.Domain.FxDto;
+using NetCoreStudy.First.Web.FxDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Domain
+namespace NetCoreStudy.First.Web.FxRepository
 {
-    public interface IUserManagerService
+    public interface IUserManagerRepository
     {
         Task<List<MyUser>> GetUsersByDynamicConditionAsync(UserQueryCondition queryCondition);
-
+        Task UpdateUser(MyUserDto userDto);
     }
 }

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NetCoreStudy.First.Domain;
-using NetCoreStudy.First.Domain.FxDto;
+using NetCoreStudy.First.Domain.FxService;
 using NetCoreStudy.First.Web.FxAttribute;
+using NetCoreStudy.First.Web.FxDto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -78,11 +78,10 @@ namespace NetCoreStudy.First.Web.Controllers.UserManager
         /// </summary>
         /// <returns></returns>
         [HttpPut]
-        public async Task<List<MyUser>> UpdateUsersById(UserQueryCondition userQueryCondition)
+        public async Task UpdateUsersById(MyUserDto userDto)
         {
 
-            var result = await _userManagerService.GetUsersByDynamicConditionAsync(userQueryCondition);
-            return result;
+             await _userManagerService.UpdateUser(userDto);
         }
     }
 }

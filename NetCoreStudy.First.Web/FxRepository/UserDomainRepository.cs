@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using NetCoreStudy.First.Domain;
 using NetCoreStudy.First.Domain.Entity;
-using NetCoreStudy.First.Domain.FxRepository;
 using NetCoreStudy.First.Domain.ValueObj;
+using NetCoreStudy.First.EFCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Zack.Infrastructure.EFCore;
 
-namespace NetCoreStudy.First.EFCore
+namespace NetCoreStudy.First.Web.FxRepository
 {
     public class UserDomainRepository : IUserDomainRepository
     {
@@ -29,7 +29,7 @@ namespace NetCoreStudy.First.EFCore
 
         public async Task AddNewLoginHistoryAsync(PhoneNumber phoneNumber, string msg)
         {
-            User? user = await FindOneAsync(phoneNumber);
+            User user = await FindOneAsync(phoneNumber);
             Guid? userId = null;
             if (user != null)
             {
@@ -38,18 +38,18 @@ namespace NetCoreStudy.First.EFCore
             _dbContext.UserLoginHistories.Add(new UserLoginHistory(userId, phoneNumber, msg));
         }
 
-        public async Task<User?> FindOneAsync(PhoneNumber phoneNumber)
+        public async Task<User> FindOneAsync(PhoneNumber phoneNumber)
         {
             var exp = ExpressionHelper.MakeEqual((User u) => u.PhoneNumber, phoneNumber);
 
-            User? user = await (_dbContext.Users.Include(e => e.AccessFail)).SingleOrDefaultAsync(exp);
+            User user = await _dbContext.Users.Include(e => e.AccessFail).SingleOrDefaultAsync(exp);
 
             return user;
         }
 
-        public async Task<User?> FindOneAsync(Guid userId)
+        public async Task<User> FindOneAsync(Guid userId)
         {
-            User? user = await (_dbContext.Users.Include(e => e.AccessFail)).SingleOrDefaultAsync(e => e.Id == userId);
+            User user = await _dbContext.Users.Include(e => e.AccessFail).SingleOrDefaultAsync(e => e.Id == userId);
             return user;
         }
 
@@ -57,14 +57,14 @@ namespace NetCoreStudy.First.EFCore
         {
             string key = $"PhoneNumberCode{phoneNumber.RegionNumber}_{phoneNumber.Number}";
 
-            string? code = await _distributedCache.GetStringAsync(key: key);
+            string code = await _distributedCache.GetStringAsync(key: key);
             _distributedCache.Remove(key);
             return code;
         }
 
         public async Task PublishEventAsync(UserAccessResultEvent eventData)
         {
-          await  _mediator.Publish(eventData);
+            await _mediator.Publish(eventData);
         }
 
         public Task<string> RetrievePhoneCodeAsync(PhoneNumber phoneNumber)

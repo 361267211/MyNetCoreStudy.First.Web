@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
-using NetCoreStudy.First.Domain;
+using NetCoreStudy.First.Domain.FxService;
 
 namespace NetCoreStudy.First.Web.AutofacIOC
 {

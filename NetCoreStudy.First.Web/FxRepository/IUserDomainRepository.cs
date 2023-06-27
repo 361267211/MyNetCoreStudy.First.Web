@@ -1,4 +1,5 @@
-﻿using NetCoreStudy.First.Domain.Entity;
+﻿using NetCoreStudy.First.Domain;
+using NetCoreStudy.First.Domain.Entity;
 using NetCoreStudy.First.Domain.ValueObj;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Domain
+namespace NetCoreStudy.First.Web.FxRepository
 {
     public interface IUserDomainRepository
     {
@@ -15,13 +16,13 @@ namespace NetCoreStudy.First.Domain
         /// </summary>
         /// <param name="phoneNumber"></param>
         /// <returns></returns>
-        Task<User?> FindOneAsync(PhoneNumber phoneNumber);
+        Task<User> FindOneAsync(PhoneNumber phoneNumber);
         /// <summary>
         /// 使用userId查找user
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<User?> FindOneAsync(Guid userId);
+        Task<User> FindOneAsync(Guid userId);
         /// <summary>
         /// 添加登录历史
         /// </summary>
@@ -43,8 +44,8 @@ namespace NetCoreStudy.First.Domain
         /// <returns></returns>
         Task SavePhoneCodeAsync(PhoneNumber phoneNumber, string code);
 
-        Task<string?> RetrievePhoneCodeAsync(PhoneNumber phoneNumber);
-        Task<string?> FindPhoneNumberCodeAsync(PhoneNumber phoneNumber);
+        Task<string> RetrievePhoneCodeAsync(PhoneNumber phoneNumber);
+        Task<string> FindPhoneNumberCodeAsync(PhoneNumber phoneNumber);
 
     }
 }
