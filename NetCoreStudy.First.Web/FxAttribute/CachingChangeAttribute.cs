@@ -1,24 +1,24 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace NetCoreStudy.First.Web.FxAttribute
 {
     /// <summary>
     /// 注意：关联的资源名称 ResourceName ,必须在特性中传入，否则无法删除对应的缓存
     /// </summary>
-    public class CachingAttribute : Attribute
+    public class CachingChangeAttribute : Attribute
     {
         /// <summary>
         /// 关联的资源名称,必填
         /// </summary>
         public string ResourceName;
         /// <summary>
-        /// 缓存绝对过期时间（分钟）
+        /// 缓存变更特性
         /// </summary>
-        public int AbsoluteExpiration { get; set; } = 30;
-        public CachingAttribute(string resourceName)
+        /// <param name="resourceName">关联的资源名称</param>
+        public CachingChangeAttribute()
         {
-            ResourceName = resourceName;
-        }
 
+        }
     }
 }

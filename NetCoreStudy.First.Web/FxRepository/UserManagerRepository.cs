@@ -26,7 +26,7 @@ namespace NetCoreStudy.First.Web.FxRepository
         /// </summary>
         /// <param name="queryCondition"></param>
         /// <returns></returns>
-        [CachingAttribute(AbsoluteExpiration = 10, Resource= nameof(MyUser))] //使用缓存AOP 缓存10分钟,资源名称
+        [CachingAttribute(nameof(MyUser))] //使用缓存AOP 缓存10分钟,资源名称
         public async Task<List<MyUser>> GetUsersByDynamicConditionAsync(UserQueryCondition queryCondition)
         {
             var query = _appUserDb.Users.AsQueryable();
@@ -38,13 +38,14 @@ namespace NetCoreStudy.First.Web.FxRepository
 
             return userlist;
         }
-        public async Task<long> UpdateUser(MyUserDto userDto)
+        [CachingChangeAttribute(ResourceName = nameof(MyUser))]
+        public async Task UpdateUser(MyUserDto userDto)
         {
             var user = await _appUserDb.Users.FirstAsync(e => e.UserName == userDto.UesrName);
             user.WeiChatAccount = "138***4813" + DateTime.Now.ToString();
             _appUserDb.Users.Update(user);
 
-            return user.Id ;
+            return ;
         }
     }
 }

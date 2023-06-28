@@ -1,9 +1,11 @@
 ﻿using Castle.DynamicProxy;
 using Grpc.Core.Interceptors;
+using IdentityServer4.Services;
 using Microsoft.Extensions.Caching.Distributed;
 using NetCoreStudy.First.Common.FxCommonHelper;
 using NetCoreStudy.First.Web.FxAttribute;
 using NetCoreStudy.First.Web.RedisCache;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,49 +24,29 @@ namespace NetCoreStudy.First.Web.AutofacIOC
     public class FxCachingInterceptor : IInterceptor
     {
         private readonly IDistributedCache _cache;
+        private readonly IConnectionMultiplexer _connectionMultiplexer;
+        private protected CachingAttribute _cachingAttribute;
 
-        public FxCachingInterceptor(IDistributedCache cache)
+        public FxCachingInterceptor(IDistributedCache cache, IConnectionMultiplexer connectionMultiplexer)
         {
             _cache = cache;
+            _connectionMultiplexer = connectionMultiplexer;
         }
-
-        public async Task GetCacheAsync<T>(IInvocation invocation, string Name)
-        {
-            T Rcache =  _cache.GetObject<T>(Name);
-            if (Rcache != null)
-            {
-                //缓存不为空的时候将缓存结果给方法返回值，异步方法需要  Task.FromResult
-                invocation.ReturnValue = Task.FromResult(Rcache);
-                return;
-            }
-
-            //缓存为空
-            invocation.Proceed();
-
-            //结果不为空是写入缓存
-            await SetCacheAsync((dynamic)invocation.ReturnValue, Name);
-
-        }
-        private async Task SetCacheAsync<TResult>(Task<TResult> task, string name)
-        {
-            var data = await task.ConfigureAwait(false);
-            if (data != null)
-            {
-                await _cache.SetObjectAsync(name, data);
-            }
-        }
-
         public void Intercept(IInvocation invocation)
         {
             var method = invocation.MethodInvocationTarget ?? invocation.Method;
-            //对当前方法的特性验证
-            var qCachingAttribute = GetQCachingAttributeInfo(invocation.MethodInvocationTarget ?? invocation.Method);
+           //对当前方法的特性验证
+             _cachingAttribute = GetQCachingAttributeInfo(invocation.MethodInvocationTarget ?? invocation.Method);
+            if (_cachingAttribute == null)
+            {
+                invocation.Proceed();//直接执行被拦截方法
+                return;
+            }
 
             string ParameterType = invocation.MethodInvocationTarget.ReturnType.Name;
             if (ParameterType == "Void" || ParameterType == "Task" || ParameterType == "ValueTask")
             {
                 invocation.Proceed();//直接执行被拦截方法
-
             }
             else
             {
@@ -81,12 +63,62 @@ namespace NetCoreStudy.First.Web.AutofacIOC
                 }
                 else
                 {
-
+                    //取异步方法的泛型参数类型
+                    var generic = invocation.MethodInvocationTarget.ReturnType;
+                    //通过反射获取异步缓存方法
+                    MethodInfo mi = this.GetType().GetMethod("GetCacheSync").MakeGenericMethod(new Type[] { generic });
+                    //传入参数，执行method
+                    mi.Invoke(this, new object[] { invocation, CustomCacheKey(invocation) });
                 }
             }
 
         }
 
+        #region 存、取缓存值
+        public async Task GetCacheSync<T>(IInvocation invocation, string Name)
+        {
+            T Rcache = _cache.GetObject<T>(Name);
+            if (Rcache != null)
+            {
+                //缓存不为空的时候将缓存结果给方法返回值，异步方法需要  Task.FromResult
+                invocation.ReturnValue = Rcache;
+                return;
+            }
+
+            //缓存为空,执行原函数
+            invocation.Proceed();
+
+            //结果不为空是写入缓存
+            _cache.SetObject(Name, (T)invocation.ReturnValue);
+        }
+        public async Task GetCacheAsync<T>(IInvocation invocation, string Name)
+        {
+            T Rcache = _cache.GetObject<T>(Name);
+            if (Rcache != null)
+            {
+                //缓存不为空的时候将缓存结果给方法返回值，异步方法需要  Task.FromResult
+                invocation.ReturnValue = Task.FromResult(Rcache);
+                return;
+            }
+
+            //缓存为空
+            invocation.Proceed();
+
+            //结果不为空是写入缓存
+            await SetCacheAsync((dynamic)invocation.ReturnValue, Name);
+        }
+        private async Task SetCacheAsync<TResult>(Task<TResult> task, string name)
+        {
+            var data = await task.ConfigureAwait(false);
+            if (data != null)
+            {
+                await _cache.SetObjectAsync(name, data);
+            }
+        }
+
+        #endregion
+
+        #region 处理Argument，返回key
         /// <summary>
         /// 自定义缓存的key
         /// </summary>
@@ -98,7 +130,7 @@ namespace NetCoreStudy.First.Web.AutofacIOC
             var methodName = invocation.Method.Name;
             var methodArguments = invocation.Arguments.Select(GetArgumentValue).Take(3).ToList();//获取参数列表，最多三个
 
-            string key = $"{typeName}:{methodName}:";
+            string key = $"{typeName}:{methodName}:Resource:{_cachingAttribute.ResourceName}:";
             foreach (var param in methodArguments)
             {
                 key = $"{key}{param}:";
@@ -106,13 +138,6 @@ namespace NetCoreStudy.First.Web.AutofacIOC
 
             return key.TrimEnd(':');
         }
-
-        private CachingAttribute GetQCachingAttributeInfo(MethodInfo method)
-        {
-            return method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAttribute)) as CachingAttribute;
-        }
-
-        #region 处理Argument
         /// <summary>
         /// object 转 string
         /// </summary>
@@ -300,6 +325,10 @@ namespace NetCoreStudy.First.Web.AutofacIOC
         }
         #endregion
 
+        private CachingAttribute GetQCachingAttributeInfo(MethodInfo method)
+        {
+            return method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAttribute)) as CachingAttribute;
+        }
     }
 }
 

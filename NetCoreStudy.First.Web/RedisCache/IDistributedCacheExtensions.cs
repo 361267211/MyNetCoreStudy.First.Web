@@ -7,6 +7,7 @@ namespace NetCoreStudy.First.Web.RedisCache
 {
     public static class IDistributedCacheExtensions
     {
+
         /// <summary>
         /// 获取缓存，反序列化成对象返回
         /// </summary>

@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using NetCoreStudy.First.Domain.FxService;
 using NetCoreStudy.First.Web.FxRepository;
+using StackExchange.Redis;
 
 namespace NetCoreStudy.First.Web.AutofacIOC
 {
@@ -15,10 +16,12 @@ namespace NetCoreStudy.First.Web.AutofacIOC
         {
             //注册删除缓存装饰器
             builder.RegisterType<FxCachingInterceptor>();
+            builder.RegisterType<FxCachingChangeInterceptor>();
             builder.RegisterType<UserManagerRepository>()
                 .As<IUserManagerRepository>()
                 .EnableInterfaceInterceptors()
-                .InterceptedBy(typeof(FxCachingInterceptor));
+                .InterceptedBy(typeof(FxCachingInterceptor), typeof(FxCachingChangeInterceptor))
+                ;
 
 
 

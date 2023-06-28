@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
+using DotNetCore.CAP;
 using IdentityServer.EFCore.Entity;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Test;
@@ -31,6 +32,7 @@ using NetCoreStudy.First.Web.IdentityService4;
 using NetCoreStudy.First.Web.JWT;
 using NetCoreStudy.First.Web.Middleware;
 using NetCoreStudy.First.Web.SignalR;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -254,9 +256,12 @@ namespace NetCoreStudy.First.Web
             //加入redis作为分布式缓存
             services.AddStackExchangeRedisCache(option =>
             {
-                option.Configuration = "localhost";
-                option.InstanceName = "zzq_";
+                option.Configuration = "42.193.20.184:6379,abortConnect=false,password=Pwcwelcome1";
+                //option.InstanceName = "zzq_";
             });
+
+            
+            services.AddScoped<IConnectionMultiplexer>(provider => ConnectionMultiplexer.Connect("42.193.20.184:6379,abortConnect=false,password=Pwcwelcome1"));
 
             //加入SignalR，webSocket
             services.AddSignalR();

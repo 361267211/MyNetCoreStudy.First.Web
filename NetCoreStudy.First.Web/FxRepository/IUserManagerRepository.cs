@@ -12,6 +12,6 @@ namespace NetCoreStudy.First.Web.FxRepository
     public interface IUserManagerRepository
     {
         Task<List<MyUser>> GetUsersByDynamicConditionAsync(UserQueryCondition queryCondition);
-        Task<long> UpdateUser(MyUserDto userDto);
+        Task UpdateUser(MyUserDto userDto);
     }
 }
