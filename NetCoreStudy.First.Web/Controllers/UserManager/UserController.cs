@@ -65,7 +65,7 @@ namespace NetCoreStudy.First.Web.Controllers.UserManager
         /// </summary>
         /// <returns></returns>
         [HttpPut]
-        [RemoveCachAttribute(resource:"User")]
+        [CachingAttribute(resource:"User")]
         public async Task<List<MyUser>> getUsersByCondition(UserQueryCondition userQueryCondition)
         {
            

@@ -1,7 +1,9 @@
 ﻿using IdentityServer.EFCore.Entity;
+using IdentityServer4.Models;
 using Microsoft.EntityFrameworkCore;
 using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.Utility;
+using NetCoreStudy.First.Web.FxAttribute;
 using NetCoreStudy.First.Web.FxDto;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,7 @@ namespace NetCoreStudy.First.Web.FxRepository
         /// </summary>
         /// <param name="queryCondition"></param>
         /// <returns></returns>
+        [CachingAttribute(AbsoluteExpiration = 10, Resource= nameof(MyUser))] //使用缓存AOP 缓存10分钟,资源名称
         public async Task<List<MyUser>> GetUsersByDynamicConditionAsync(UserQueryCondition queryCondition)
         {
             var query = _appUserDb.Users.AsQueryable();
@@ -31,22 +34,17 @@ namespace NetCoreStudy.First.Web.FxRepository
             {
                 query = query.CreateExp(condition.FieldName, condition.FieldValue);
             }
-            //var user1 =await query.ToListAsync();
+            var userlist =await query.ToListAsync();
 
-            List<MyUser> userlist = new List<MyUser>();
-            userlist.Add(new MyUser { UserName = "666" });
             return userlist;
         }
-
-        //[RemoveCachAttribute(resource: "User")]
-
-        public async Task UpdateUser(MyUserDto userDto)
+        public async Task<long> UpdateUser(MyUserDto userDto)
         {
             var user = await _appUserDb.Users.FirstAsync(e => e.UserName == userDto.UesrName);
             user.WeiChatAccount = "138***4813" + DateTime.Now.ToString();
             _appUserDb.Users.Update(user);
 
-
+            return user.Id ;
         }
     }
 }

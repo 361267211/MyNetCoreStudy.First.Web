@@ -715,6 +715,27 @@
             <param name="sender"></param>
             <param name="e"></param>
         </member>
+        <member name="M:NetCoreStudy.First.Common.FxCommonHelper.MD5Helper.MD5Encrypt16(System.String)">
+            <summary>
+            16位 MD5 加密
+            </summary>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.First.Common.FxCommonHelper.MD5Helper.MD5Encrypt32(System.String)">
+            <summary>
+            32位 MD5 加密
+            </summary>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetCoreStudy.First.Common.FxCommonHelper.MD5Helper.MD5Encrypt64(System.String)">
+            <summary>
+            64位 MD5 加密
+            </summary>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
         <member name="M:ApolloOption.OptionRegister.ConfigInitAndBindChange(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration,System.Type)">
             <summary>
             初始化全局配置项并绑定Change事件 Apollo

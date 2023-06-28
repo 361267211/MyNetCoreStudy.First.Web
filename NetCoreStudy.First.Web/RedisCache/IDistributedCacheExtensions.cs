@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
+using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace NetCoreStudy.First.Web.RedisCache
@@ -24,9 +26,14 @@ namespace NetCoreStudy.First.Web.RedisCache
         /// <returns>对象</returns>
         public static T GetObject<T>(this IDistributedCache cache, string key)
         {
-            var obj = Deserialize(cache.Get(key));
-            if (obj == null) return default;
-            return (T)obj;
+            var btValue = cache.Get(key);
+            if (btValue == null)
+            {
+                return default;
+            }
+            var obj = JsonSerializer.Deserialize<T>(btValue);
+
+            return obj;
         }
         /// <summary>
         /// 获取缓存，反序列化成对象
@@ -47,8 +54,10 @@ namespace NetCoreStudy.First.Web.RedisCache
         /// <returns>对象</returns>
         async public static Task<T> GetObjectAsync<T>(this IDistributedCache cache, string key)
         {
-            var obj = Deserialize(await cache.GetAsync(key));
-            if (obj == null) return default(T);
+            var stream = await cache.GetAsync(key);
+            if (stream == null) return default(T);
+            var obj = JsonSerializer.Deserialize<T>(stream);
+
             return (T)obj;
         }
         /// <summary>
