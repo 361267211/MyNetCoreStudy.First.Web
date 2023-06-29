@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace NetCoreStudy.First.Web.Middleware
 {
-    public class CheckAndParsingMiddleware
+    public class FxTemplateMiddleware
     {
         private readonly RequestDelegate next;
-        public CheckAndParsingMiddleware(RequestDelegate next)
+        public FxTemplateMiddleware(RequestDelegate next)
         {
             this.next = next;
         }

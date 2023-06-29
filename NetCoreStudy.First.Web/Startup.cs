@@ -17,6 +17,7 @@ using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.Utility.DistributedCache;
 using NetCoreStudy.First.Web.AutofacIOC;
 using NetCoreStudy.First.Web.FxRepository;
+using NetCoreStudy.First.Web.Middleware;
 using NetCoreStudy.First.Web.SignalR;
 using StackExchange.Redis;
 using System;
@@ -104,12 +105,10 @@ namespace NetCoreStudy.First.Web
 
 
             //EF
-            //todo：数据库上下文配置，暂时禁用
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//pg数据库存在的时区问题需要通过本行代码解决
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
                 opt.UseNpgsql(GlobalConfigOption.DbContext.DbConnection);
-              //  opt.UseNpgsql("https://localhost:5001");
             });
 
             //id4
@@ -121,13 +120,13 @@ namespace NetCoreStudy.First.Web
             services.AddScoped(typeof(IUserStore<>), typeof(CustomUserStore<>));
             services.AddScoped<CustomUserManager<MyUser>>();
 
-            //仓储
+            //仓储 杨中科的示例代码
             //services.AddScoped<IUserDomainRepository, UserDomainRepository>();
 
-            //分布式缓存
+            //注册分布式缓存帮助类
             services.AddScoped<IDistributedCacheHelper, DistributedCacheHelper>();
 
-            //应用服务
+            //用户管理的注册
             services.AddScoped<IUserManagerService, UserManagerService>();
             services.AddScoped<IUserManagerRepository, UserManagerRepository>();
 
@@ -177,41 +176,41 @@ namespace NetCoreStudy.First.Web
             // services.AddAuthorization();
 
             //cap
-            //todo:暂时禁用
+            //todo:暂时禁用，CAP 可用后解除注释
             {
-/*
-                services.AddCap(c =>
-                {
-                    DotNetCore.CAP.CapOptions capOptions = c.UseEntityFramework<UserDbContext>();
+                /*
+                                services.AddCap(c =>
+                                {
+                                    DotNetCore.CAP.CapOptions capOptions = c.UseEntityFramework<UserDbContext>();
 
-                    c.UsePostgreSql(connectionString: GlobalConfigOption.DbContext.DbConnection);
+                                    c.UsePostgreSql(connectionString: GlobalConfigOption.DbContext.DbConnection);
 
-                    c.FailedRetryCount = 3;//触发失败回调的重试次数，注意与最大重试次数区分
-                    c.FailedRetryInterval = 2;//重试间隔
-                    c.SucceedMessageExpiredAfter = 60 * 60;//成功消息的保存时间
-                    c.FailedThresholdCallback = async e =>
-                    {
-                        string message = "";
-                        foreach (var item in e.Message.Headers)
-                        {
-                            message += ($"key:{item.Key},value:{item.Value}\r\n");
-                        }
-                        await System.IO.File.AppendAllTextAsync("d:/error.log", $"失败了,报错信息\r\n{message}");
-                    };
-                    c.UseRabbitMQ(mq =>
-                    {
-                        mq.HostName = GlobalConfigOption.Cap.RabbitMQ.HostName; //RabitMq服务器地址，依实际情况修改此地址
-                        mq.Port = GlobalConfigOption.Cap.RabbitMQ.Port;
-                        mq.UserName = GlobalConfigOption.Cap.RabbitMQ.UserName;  //RabbitMq账号
-                        mq.Password = GlobalConfigOption.Cap.RabbitMQ.Password;  //RabbitMq密码
-                                                                                 //指定Topic exchange名称，不指定的话会用默认的
-                        mq.ExchangeName = "cap.text.exchange.zzq";//交换的名称
+                                    c.FailedRetryCount = 3;//触发失败回调的重试次数，注意与最大重试次数区分
+                                    c.FailedRetryInterval = 2;//重试间隔
+                                    c.SucceedMessageExpiredAfter = 60 * 60;//成功消息的保存时间
+                                    c.FailedThresholdCallback = async e =>
+                                    {
+                                        string message = "";
+                                        foreach (var item in e.Message.Headers)
+                                        {
+                                            message += ($"key:{item.Key},value:{item.Value}\r\n");
+                                        }
+                                        await System.IO.File.AppendAllTextAsync("d:/error.log", $"失败了,报错信息\r\n{message}");
+                                    };
+                                    c.UseRabbitMQ(mq =>
+                                    {
+                                        mq.HostName = GlobalConfigOption.Cap.RabbitMQ.HostName; //RabitMq服务器地址，依实际情况修改此地址
+                                        mq.Port = GlobalConfigOption.Cap.RabbitMQ.Port;
+                                        mq.UserName = GlobalConfigOption.Cap.RabbitMQ.UserName;  //RabbitMq账号
+                                        mq.Password = GlobalConfigOption.Cap.RabbitMQ.Password;  //RabbitMq密码
+                                                                                                 //指定Topic exchange名称，不指定的话会用默认的
+                                        mq.ExchangeName = "cap.text.exchange.zzq";//交换的名称
 
-                    });
-                });
-*/
+                                    });
+                                });
+                */
             }
-             
+
 
             //跨域问题配置
             services.AddCors(options =>
@@ -236,10 +235,9 @@ namespace NetCoreStudy.First.Web
             services.AddStackExchangeRedisCache(option =>
             {
                 option.Configuration = "42.193.20.184:6379,abortConnect=false,password=Pwcwelcome1";
-                //option.InstanceName = "zzq_";
             });
 
-            
+
             services.AddScoped<IConnectionMultiplexer>(provider => ConnectionMultiplexer.Connect("42.193.20.184:6379,abortConnect=false,password=Pwcwelcome1"));
 
             //加入SignalR，webSocket
@@ -255,21 +253,9 @@ namespace NetCoreStudy.First.Web
             services.AddMediatR(assemblies);
 
 
-            //添加identityServic4
-            /*            services.AddIdentityServer()
-                            .AddDeveloperSigningCredential()
-                            // .AddInMemoryIdentityResources(IdentityConfig.IdentityResources)
-                             .AddInMemoryApiScopes(Config.GetApiScopes())
-                            .AddInMemoryClients(Config.GetClients())
-                            .AddInMemoryApiResources(Config.GetApiResources())
-                            //  .AddTestUsers(IdentityConfig.GetTestUsers().ToList())
-                            ;*/
-
-
-
-
-
             services.AddControllers();
+
+            //注册swagger的信息
             services.AddSwaggerGen(c =>
             {
                 //Bearer 的scheme定义
@@ -306,13 +292,13 @@ namespace NetCoreStudy.First.Web
                 c.AddSecurityDefinition("bearerAuth", securityScheme);
                 c.AddSecurityRequirement(securityRequirement);
             });
-        
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           // app.UseDatabaseInitialize();
+            // app.UseDatabaseInitialize();
 
 
             if (env.IsDevelopment())
@@ -322,25 +308,28 @@ namespace NetCoreStudy.First.Web
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NetCoreStudy.First.Web v1"));
             }
 
-            //    app.UseMiddleware<CheckAndParsingMiddleware>();
+            //自定义中间件使用代码示例
+            //app.UseMiddleware<FxTemplateMiddleware>();
 
-
+            //重定向
             app.UseHttpsRedirection();
 
 
-            // CAP
+            // 使用CAP，需配合configeservice中的部分一起使用
             //app.UseCap();
 
-            //app.UseIdentityServer();//使用IdentityServer中间件
 
             app.UseRouting();
 
+            //使用跨域策略，需配合configeservice中的部分一起使用
             app.UseCors("apiPolicy");
 
+            //使用 鉴权
             app.UseAuthentication();
-
+            //使用 授权
             app.UseAuthorization();
 
+            //使用终结点路由
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
