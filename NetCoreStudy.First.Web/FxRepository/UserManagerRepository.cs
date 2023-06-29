@@ -1,5 +1,4 @@
 ﻿using IdentityServer.EFCore.Entity;
-using IdentityServer4.Models;
 using Microsoft.EntityFrameworkCore;
 using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.Utility;
@@ -7,7 +6,6 @@ using NetCoreStudy.First.Web.FxAttribute;
 using NetCoreStudy.First.Web.FxDto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace NetCoreStudy.First.Web.FxRepository

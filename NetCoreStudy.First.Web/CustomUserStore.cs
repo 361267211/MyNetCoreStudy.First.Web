@@ -1,7 +1,6 @@
 ﻿using IdentityServer.EFCore.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using NetCoreStudy.First.EFCore;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,11 +3,13 @@ using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using NetCoreStudy.First.Web.IdentityService4;
 using System.Linq;
 
-namespace NetCoreStudy.First.Web.Extension
+namespace NetCoreStudy.First.Web.IdentityService4
 {
+    /// <summary>
+    /// 初始化用户信息的方法，todo：待删除
+    /// </summary>
     public static class DatabaseConfigExtensions
     {
         /// <summary>

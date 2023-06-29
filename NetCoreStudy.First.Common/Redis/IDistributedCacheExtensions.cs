@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Web.RedisCache
+namespace NetCoreStudy.First.Common.Redis
 {
     public static class IDistributedCacheExtensions
     {
@@ -56,10 +56,10 @@ namespace NetCoreStudy.First.Web.RedisCache
         async public static Task<T> GetObjectAsync<T>(this IDistributedCache cache, string key)
         {
             var stream = await cache.GetAsync(key);
-            if (stream == null) return default(T);
+            if (stream == null) return default;
             var obj = JsonSerializer.Deserialize<T>(stream);
 
-            return (T)obj;
+            return obj;
         }
         /// <summary>
         /// 序列化对象后，设置缓存
@@ -115,12 +115,12 @@ namespace NetCoreStudy.First.Web.RedisCache
         public static byte[] Serialize(object value)
         {
             if (value == null) return null;
-            return System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(value);
+            return JsonSerializer.SerializeToUtf8Bytes(value);
         }
         public static object Deserialize(byte[] stream)
         {
             if (stream == null) return null;
-            return System.Text.Json.JsonSerializer.Deserialize<object>(stream);
+            return JsonSerializer.Deserialize<object>(stream);
         }
     }
 }

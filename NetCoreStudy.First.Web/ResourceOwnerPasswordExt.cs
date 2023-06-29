@@ -1,6 +1,4 @@
-﻿using IdentityServer.EFCore.Entity;
-using IdentityServer4.Validation;
-using Microsoft.AspNetCore.Identity;
+﻿using IdentityServer4.Validation;
 using System.Threading.Tasks;
 
 namespace NetCoreStudy.First.Web

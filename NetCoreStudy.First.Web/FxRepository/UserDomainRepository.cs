@@ -6,10 +6,6 @@ using NetCoreStudy.First.Domain.Entity;
 using NetCoreStudy.First.Domain.ValueObj;
 using NetCoreStudy.First.EFCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Zack.Infrastructure.EFCore;
 

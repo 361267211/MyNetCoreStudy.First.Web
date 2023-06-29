@@ -1,15 +1,10 @@
 using ApolloOption;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using NetCoreStudy.First.BasicModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Winton.Extensions.Configuration.Consul;
 
 namespace NetCoreStudy.First.Web
