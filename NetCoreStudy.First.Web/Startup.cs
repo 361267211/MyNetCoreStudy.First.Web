@@ -114,9 +114,6 @@ namespace NetCoreStudy.First.Web
             //id4
             services.AddScoped<MyUser>();
 
-            //services.AddScoped<UserManager<MyUser>>();
-            //services.AddScoped<RoleManager<MyRole>>();
-
             services.AddScoped(typeof(IUserStore<>), typeof(CustomUserStore<>));
             services.AddScoped<CustomUserManager<MyUser>>();
 
@@ -236,8 +233,6 @@ namespace NetCoreStudy.First.Web
             {
                 option.Configuration = "42.193.20.184:6379,abortConnect=false,password=Pwcwelcome1";
             });
-
-
             services.AddScoped<IConnectionMultiplexer>(provider => ConnectionMultiplexer.Connect("42.193.20.184:6379,abortConnect=false,password=Pwcwelcome1"));
 
             //º”»ÎSignalR£¨webSocket
