@@ -67,8 +67,17 @@ namespace NetCoreStudy.First.Web.Controllers.UserManager
         [HttpPut]
         public async Task<List<MyUser>> getUsersByCondition(UserQueryCondition userQueryCondition)
         {
-           
+
             var result = await _userManagerService.GetUsersByDynamicConditionAsync(userQueryCondition);
+
+
+            //List<MyUser> result = new List<MyUser>
+            //{
+            //    new MyUser
+            //    {
+            //        UserName="zzq"
+            //    }
+            //};
             return result;
         }
 
@@ -80,7 +89,7 @@ namespace NetCoreStudy.First.Web.Controllers.UserManager
         public async Task UpdateUsersById(MyUserDto userDto)
         {
 
-             await _userManagerService.UpdateUser(userDto);
+            await _userManagerService.UpdateUser(userDto);
         }
     }
 }

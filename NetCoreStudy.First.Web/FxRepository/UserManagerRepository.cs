@@ -27,6 +27,10 @@ namespace NetCoreStudy.First.Web.FxRepository
         [CachingAttribute(nameof(MyUser))] //使用缓存AOP 缓存10分钟,资源名称
         public async Task<List<MyUser>> GetUsersByDynamicConditionAsync(UserQueryCondition queryCondition)
         {
+            //模拟耗时操作
+            Task.Delay(1000).Wait();
+
+
             var query = _appUserDb.Users.AsQueryable();
             foreach (var condition in queryCondition.ConditionList)
             {

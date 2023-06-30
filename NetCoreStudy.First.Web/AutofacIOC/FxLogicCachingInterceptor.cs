@@ -23,7 +23,7 @@ namespace NetCoreStudy.First.Web.AutofacIOC
     /// <summary>
     /// 使用autofac做的缓存装饰器:改装饰器用于删除缓存
     /// </summary>
-    public class FxCachingInterceptor : IInterceptor
+    public class FxLogicCachingInterceptor : IInterceptor
     {
         private readonly IDistributedCache _cache;
         private readonly IConnectionMultiplexer _connectionMultiplexer;
@@ -33,7 +33,7 @@ namespace NetCoreStudy.First.Web.AutofacIOC
 
 
 
-        public FxCachingInterceptor(IDistributedCache cache, IConnectionMultiplexer connectionMultiplexer)
+        public FxLogicCachingInterceptor(IDistributedCache cache, IConnectionMultiplexer connectionMultiplexer)
         {
             _cache = cache;
             _connectionMultiplexer = connectionMultiplexer;
@@ -88,12 +88,12 @@ namespace NetCoreStudy.First.Web.AutofacIOC
         #region 存、取缓存值
         public async Task GetCacheSync<T>(IInvocation invocation, string Name)
         {
-            T Rcache = _cache.GetObject<T>(Name);
+            RedisData<T> Rcache = _cache.GetObject<RedisData<T>>(Name);
             //获取了非空缓存数据
-            if (Rcache != null)
+            if (Rcache.Data != null)
             {
                 //缓存不为空的时候将缓存结果给方法返回值，异步方法需要  Task.FromResult
-                invocation.ReturnValue = Rcache;
+                invocation.ReturnValue = Rcache.Data;
                 return;
             }
 
@@ -106,16 +106,32 @@ namespace NetCoreStudy.First.Web.AutofacIOC
         }
         public async Task GetCacheAsync<T>(IInvocation invocation, string Name)
         {
+
             //第一次未获取缓存数据，尝试去加锁 自旋重试
             bool setnxSuccess;
+            RedisData<T> Rcache = _cache.GetObject<RedisData<T>>(Name);
+
             do
             {
-                T Rcache = _cache.GetObject<T>(Name);
+                Rcache = _cache.GetObject<RedisData<T>>(Name);
 
-                if (Rcache != null)
+                if (Rcache != null)//缓存已被创建过，且有值
                 {
+                    if (TimeSpan.Compare(Rcache.LogicExpireTimeSpan, TimeSpan.FromTicks(DateTime.Now.Ticks)) == -1) //校验是否逻辑过期
+                    {
+                        //开启新的线程，执行正常逻辑重建数据
+                        Task.Run(async () =>
+                        {
+                            //缓存过期，重新执行业务，重建缓存
+                            invocation.Proceed();
+
+                            //结果写入缓存
+                            await SetCacheAsync((dynamic)invocation.ReturnValue, Name);
+                        });
+                    }
+
                     //缓存不为空的时候将缓存结果给方法返回值，异步方法需要  Task.FromResult
-                    invocation.ReturnValue = Task.FromResult(Rcache);
+                    invocation.ReturnValue = Task.FromResult(Rcache.Data);
                     return;
                 }
 
@@ -125,29 +141,34 @@ namespace NetCoreStudy.First.Web.AutofacIOC
                 {
                     Thread.Sleep(500);//休眠500ms
                 }
-                 
+
 
             } while (!setnxSuccess);
 
-            //缓存为空
+
+
+
+            //缓存不存在，首次执行业务逻辑，获取结果
             invocation.Proceed();
 
             //结果不为空是写入缓存
             await SetCacheAsync((dynamic)invocation.ReturnValue, Name);
         }
 
-
+        /// <summary>
+        /// 将结果写入缓存
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="task"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         private async Task SetCacheAsync<TResult>(Task<TResult> task, string name)
         {
             var data = await task.ConfigureAwait(false);
-            if (data != null)
-            {
-                await _cache.SetObjectAsync(name, data);
-            }
-            else if (data == null)
-            {
-                await _cache.SetObjectAsync(name, data);
-            }
+            RedisData<TResult> Rcache = new RedisData<TResult>(data: data);
+
+            await _cache.SetObjectAsync(name, Rcache);
+
 
             this.redisMutex.ReleaseLock();//释放锁
         }
