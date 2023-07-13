@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.Utility;
 using NetCoreStudy.First.Web.FxAttribute;
-using NetCoreStudy.First.Web.FxDto;
+using NetCoreStudy.First.Web.FxDto.FxUser;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Web.FxRepository
+namespace NetCoreStudy.First.Web.FxRepository.FxUser
 {
     public class UserManagerRepository : IUserManagerRepository
     {
@@ -24,7 +24,7 @@ namespace NetCoreStudy.First.Web.FxRepository
         /// </summary>
         /// <param name="queryCondition"></param>
         /// <returns></returns>
-        [CachingAttribute(nameof(MyUser))] //使用缓存AOP 缓存10分钟,资源名称
+        [Caching(nameof(MyUser))] //使用缓存AOP 缓存10分钟,资源名称
         public async Task<List<MyUser>> GetUsersByDynamicConditionAsync(UserQueryCondition queryCondition)
         {
             //模拟耗时操作
@@ -36,18 +36,18 @@ namespace NetCoreStudy.First.Web.FxRepository
             {
                 query = query.CreateExp(condition.FieldName, condition.FieldValue);
             }
-            var userlist =await query.ToListAsync();
+            var userlist = await query.ToListAsync();
 
             return userlist;
         }
-        [CachingChangeAttribute(ResourceName = nameof(MyUser))]
+        [CachingChange(ResourceName = nameof(MyUser))]
         public async Task UpdateUser(MyUserDto userDto)
         {
             var user = await _appUserDb.Users.FirstAsync(e => e.UserName == userDto.UesrName);
             user.WeiChatAccount = "138***4813" + DateTime.Now.ToString();
             _appUserDb.Users.Update(user);
 
-            return ;
+            return;
         }
     }
 }

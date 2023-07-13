@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Web.FxDto
+namespace NetCoreStudy.First.Web.FxDto.FxUser
 {
     public class MyUserDto
     {

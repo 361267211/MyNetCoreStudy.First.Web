@@ -1,8 +1,9 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
-using NetCoreStudy.First.Domain.FxService;
-using NetCoreStudy.First.Web.FxRepository;
+using NetCoreStudy.First.Web.FxRepository.FxFondRep;
+using NetCoreStudy.First.Web.FxRepository.FxUser;
+using NetCoreStudy.First.Web.FxService.FxFondService;
 using StackExchange.Redis;
 
 namespace NetCoreStudy.First.Web.AutofacIOC
@@ -17,6 +18,8 @@ namespace NetCoreStudy.First.Web.AutofacIOC
             //注册删除缓存装饰器
             builder.RegisterType<FxCachingInterceptor>();
             builder.RegisterType<FxCachingChangeInterceptor>();
+            builder.RegisterType<UserManagerService>()
+                .As<IUserManagerService>();
             builder.RegisterType<UserManagerRepository>()
                 .As<IUserManagerRepository>()
                 .EnableInterfaceInterceptors()
@@ -24,7 +27,15 @@ namespace NetCoreStudy.First.Web.AutofacIOC
                 ;
 
 
+            builder.RegisterType<FondRepository>()
+                .As<IFondRepository>();
+            builder.RegisterType<FondService>()
+                .As<IFondService>();
 
+            builder.RegisterType<ContactRepository>()
+                .As<IContactRepository>();
+            builder.RegisterType<ContactService>()
+                .As<IContactService>();
             base.Load(builder);
         }
     }

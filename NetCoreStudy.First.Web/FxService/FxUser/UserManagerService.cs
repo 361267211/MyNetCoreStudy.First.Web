@@ -1,10 +1,10 @@
 ﻿using IdentityServer.EFCore.Entity;
-using NetCoreStudy.First.Web.FxDto;
-using NetCoreStudy.First.Web.FxRepository;
+using NetCoreStudy.First.Web.FxDto.FxUser;
+using NetCoreStudy.First.Web.FxRepository.FxUser;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Domain.FxService
+namespace NetCoreStudy.First.Web.FxRepository.FxUser
 {
     public class UserManagerService : IUserManagerService
     {

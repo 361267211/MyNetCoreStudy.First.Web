@@ -2,6 +2,7 @@
 using NetCoreStudy.First.Domain;
 using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.Web.FxRepository;
+using NetCoreStudy.First.Web.FxRepository.FxUser;
 using System.Threading;
 using System.Threading.Tasks;
 

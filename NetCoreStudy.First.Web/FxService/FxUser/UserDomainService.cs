@@ -1,11 +1,12 @@
-﻿using NetCoreStudy.First.Domain.Entity;
+﻿using NetCoreStudy.First.Domain;
+using NetCoreStudy.First.Domain.Entity;
 using NetCoreStudy.First.Domain.ValueObj;
-using NetCoreStudy.First.Web.FxRepository;
+using NetCoreStudy.First.Web.FxRepository.FxUser;
 //using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Domain.FxService
+namespace NetCoreStudy.First.Web.FxRepository.FxUser
 {
     public class UserDomainService
     {

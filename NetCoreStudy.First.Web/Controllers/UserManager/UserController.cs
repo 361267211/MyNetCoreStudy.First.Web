@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NetCoreStudy.First.Domain.FxService;
 using NetCoreStudy.First.Web.FxAttribute;
-using NetCoreStudy.First.Web.FxDto;
+using NetCoreStudy.First.Web.FxDto.FxUser;
+using NetCoreStudy.First.Web.FxRepository.FxUser;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

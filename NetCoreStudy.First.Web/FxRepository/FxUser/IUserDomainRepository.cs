@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreStudy.First.Web.FxRepository
+namespace NetCoreStudy.First.Web.FxRepository.FxUser
 {
     public interface IUserDomainRepository
     {

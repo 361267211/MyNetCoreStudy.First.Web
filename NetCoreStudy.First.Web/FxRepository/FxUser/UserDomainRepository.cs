@@ -9,7 +9,7 @@ using System;
 using System.Threading.Tasks;
 using Zack.Infrastructure.EFCore;
 
-namespace NetCoreStudy.First.Web.FxRepository
+namespace NetCoreStudy.First.Web.FxRepository.FxUser
 {
     public class UserDomainRepository : IUserDomainRepository
     {

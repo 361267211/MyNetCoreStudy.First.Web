@@ -11,6 +11,7 @@
         /// 数据库上下文
         /// </summary>
         public static DbContext DbContext { get; set; }
+        public static DbContext FondDbContext { get; set; }
 
         ///// <summary>
         ///// 

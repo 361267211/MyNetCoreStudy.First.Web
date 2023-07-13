@@ -10,8 +10,4 @@
     <PackageReference Include="Zack.Commons" Version="1.1.11" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AutoFacIOC\" />
-  </ItemGroup>
-
 </Project>

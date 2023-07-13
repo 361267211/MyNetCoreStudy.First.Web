@@ -12,11 +12,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using NetCoreStudy.First.BasicModel;
-using NetCoreStudy.First.Domain.FxService;
 using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.Utility.DistributedCache;
 using NetCoreStudy.First.Web.AutofacIOC;
-using NetCoreStudy.First.Web.FxRepository;
+using NetCoreStudy.First.Web.FxRepository.FxUser;
+using NetCoreStudy.First.Web.FxRepository.FxUser;
 using NetCoreStudy.First.Web.Middleware;
 using NetCoreStudy.First.Web.SignalR;
 using StackExchange.Redis;
@@ -111,6 +111,11 @@ namespace NetCoreStudy.First.Web
                 opt.UseNpgsql(GlobalConfigOption.DbContext.DbConnection);
             });
 
+            services.AddDbContext<FondDbContext>(opt =>
+            {
+                opt.UseNpgsql(GlobalConfigOption.FondDbContext.DbConnection);
+            });
+
             //id4
             services.AddScoped<MyUser>();
 
@@ -124,8 +129,8 @@ namespace NetCoreStudy.First.Web
             services.AddScoped<IDistributedCacheHelper, DistributedCacheHelper>();
 
             //用户管理的注册
-            services.AddScoped<IUserManagerService, UserManagerService>();
-            services.AddScoped<IUserManagerRepository, UserManagerRepository>();
+            //services.AddScoped<IUserManagerService, UserManagerService>();
+            //services.AddScoped<IUserManagerRepository, UserManagerRepository>();
 
 
 
