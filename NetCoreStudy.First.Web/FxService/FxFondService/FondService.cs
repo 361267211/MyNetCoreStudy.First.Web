@@ -11,11 +11,13 @@ namespace NetCoreStudy.First.Web.FxService.FxFondService
     {
         private readonly IFondRepository _fondRepository;
         private readonly IContactRepository _contactRepository;
+        private readonly IFondEventRepository _eventRepository;
 
-        public FondService(IFondRepository fondRepository, IContactRepository contactRepository)
+        public FondService(IFondRepository fondRepository, IContactRepository contactRepository, IFondEventRepository eventRepository)
         {
             _fondRepository = fondRepository;
             _contactRepository = contactRepository;
+            _eventRepository = eventRepository;
         }
 
         public async Task<List<FxContactDto>> GetAllContactByEvent(string eventId)
@@ -26,6 +28,12 @@ namespace NetCoreStudy.First.Web.FxService.FxFondService
 
             var lstdtoCons = lstCons.Adapt<List<FxContactDto>>();
             return lstdtoCons;
+        }
+
+        public async Task<List<FxFondEventDto>> GetEventsByInitiator(string contactId)
+        {
+            var eventsEntity= await _eventRepository.GetEventsByInitiator(contactId);
+            return eventsEntity.Adapt<List<FxFondEventDto>>();
         }
 
         public async Task<List<FxFondDto>> GetFontsByEvent(string eventId)

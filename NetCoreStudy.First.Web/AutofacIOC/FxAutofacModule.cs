@@ -36,6 +36,10 @@ namespace NetCoreStudy.First.Web.AutofacIOC
                 .As<IContactRepository>();
             builder.RegisterType<ContactService>()
                 .As<IContactService>();
+
+            builder.RegisterType<FondEventRepository>()
+                .As<IFondEventRepository>();
+  
             base.Load(builder);
         }
     }

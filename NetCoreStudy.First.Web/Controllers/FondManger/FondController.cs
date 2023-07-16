@@ -39,7 +39,17 @@ namespace NetCoreStudy.First.Web.Controllers.FondManger
         public async Task<List<FxContactDto>> GetContactsByName(string name)
         {
             return await _contactService.GetContactsByName(name);
+        }
 
+        /// <summary>
+        /// 根据事件主导者查询事件
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<List<FxFondEventDto>> GetEventsByInitiator(string contactId)
+        {
+            return await _fondService.GetEventsByInitiator(contactId);
         }
     }
 }
