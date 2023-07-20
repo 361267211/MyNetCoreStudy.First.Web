@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IdentityServer4.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using NetCoreStudy.First.Web.FxDto.FxFond;
 using NetCoreStudy.First.Web.FxService.FxFondService;
 using NetCoreStudy.First.Web.Request;
@@ -14,12 +17,14 @@ namespace NetCoreStudy.First.Web.Controllers.FondManger
         private readonly IFondService _fondService;
         private readonly IContactService _contactService;
         private readonly IFondEventService _eventService;
+        private readonly IHttpContextAccessor _http;
 
-        public FondEventController(IFondService fondService, IContactService contactService, IFondEventService eventService)
+        public FondEventController(IFondService fondService, IContactService contactService, IFondEventService eventService, IHttpContextAccessor httpContet)
         {
             _fondService = fondService;
             _contactService = contactService;
             _eventService = eventService;
+            _http = httpContet;
         }
 
         /// <summary>
@@ -60,10 +65,11 @@ namespace NetCoreStudy.First.Web.Controllers.FondManger
         /// </summary>
         /// <param name="eventDto"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         public async Task<bool> UpdateEvent(FxFondEventDto eventDto)
         {
-
+          var user=  _http.HttpContext.User.GetDisplayName();
           return await  _eventService.UpdateEvent(eventDto);
 
         }

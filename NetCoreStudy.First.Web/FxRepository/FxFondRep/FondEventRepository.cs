@@ -59,7 +59,7 @@ namespace NetCoreStudy.First.Web.FxRepository.FxFondRep
 
         public async Task<bool> UpdateEvent(FxFondEventDto eventDto)
         {
-            //  FxFondEvent fxFondEvent = await _eventDb.FondEvents.FindAsync(eventDto.Id);
+             
             if (eventDto.Id.IsNullOrEmpty())
             {
                 eventDto.Id = Guid.NewGuid().ToString();

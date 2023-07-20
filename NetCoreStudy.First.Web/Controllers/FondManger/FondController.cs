@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreStudy.First.Domain.Entity.Fond;
 using NetCoreStudy.First.Web.FxDto.FxCommonDto;

@@ -50,14 +50,12 @@ namespace NetCoreStudy.First.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //注册默认容器之前注册的类
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
+ 
             //ID4
             //    var migrationsAssembly = typeof(UserDbContext).GetTypeInfo().Assembly.GetName().Name;
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordExt>();//自定义资源所有者密码模式认证
 
-
+            services.AddHttpContextAccessor();
 
 
             services.AddIdentityCore<MyUser>(options =>
@@ -175,7 +173,7 @@ namespace NetCoreStudy.First.Web
 
                 });
 
-            // services.AddAuthorization();
+             services.AddAuthorization();
 
             //cap
             //todo:暂时禁用，CAP 可用后解除注释
@@ -252,6 +250,9 @@ namespace NetCoreStudy.First.Web
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             services.AddMediatR(assemblies);
 
+            //注册默认容器之前注册的类
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
 
             services.AddControllers();
 
@@ -293,6 +294,8 @@ namespace NetCoreStudy.First.Web
                 c.AddSecurityRequirement(securityRequirement);
             });
 
+ 
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -326,6 +329,8 @@ namespace NetCoreStudy.First.Web
 
             //使用 鉴权
             app.UseAuthentication();
+
+
             //使用 授权
             app.UseAuthorization();
 
