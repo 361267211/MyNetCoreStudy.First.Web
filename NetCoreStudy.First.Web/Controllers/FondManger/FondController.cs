@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreStudy.First.Domain.Entity.Fond;
+using NetCoreStudy.First.Web.FxDto.FxCommonDto;
 using NetCoreStudy.First.Web.FxDto.FxFond;
 using NetCoreStudy.First.Web.FxService.FxFondService;
+using NetCoreStudy.First.Web.Request;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,20 +16,22 @@ namespace NetCoreStudy.First.Web.Controllers.FondManger
     {
         private readonly IFondService _fondService;
         private readonly IContactService _contactService;
+        private readonly IFondEventService _eventService;
 
-        public FondController(IFondService fondService, IContactService contactService)
+        public FondController(IFondService fondService, IContactService contactService, IFondEventService eventService)
         {
             _fondService = fondService;
             _contactService = contactService;
+            _eventService = eventService;
         }
 
-        [HttpGet]
-        public async Task<List<FxContactDto>> GetContactsByEvent(string eventId)
-        {
-            return await _fondService.GetAllContactByEvent(eventId);
+       
 
-        }
-
+        /// <summary>
+        /// 根据事件id 查Fonds列表
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<List<FxFondDto>> GetFondsByEvent(string eventId)
         {
@@ -35,21 +39,6 @@ namespace NetCoreStudy.First.Web.Controllers.FondManger
 
         }
 
-        [HttpGet]
-        public async Task<List<FxContactDto>> GetContactsByName(string name)
-        {
-            return await _contactService.GetContactsByName(name);
-        }
 
-        /// <summary>
-        /// 根据事件主导者查询事件
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<List<FxFondEventDto>> GetEventsByInitiator(string contactId)
-        {
-            return await _fondService.GetEventsByInitiator(contactId);
-        }
     }
 }

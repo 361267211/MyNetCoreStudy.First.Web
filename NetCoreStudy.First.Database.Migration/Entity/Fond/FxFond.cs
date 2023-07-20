@@ -1,6 +1,7 @@
 ﻿using NetCoreStudy.First.Domain.AggregateRoot;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace NetCoreStudy.First.Domain.Entity.Fond
         /// <summary>
         /// 主键Id
         /// </summary>
+        [Key]
         public string Id { get; set; }
 
         /// <summary>

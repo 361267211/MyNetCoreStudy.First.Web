@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetCoreStudy.First.EFCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NetCoreStudy.First.EFCore.Migrations.FondDb
 {
     [DbContext(typeof(FondDbContext))]
-    partial class FondDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230716054340_field change of fondEvent")]
+    partial class fieldchangeoffondEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,9 +45,6 @@ namespace NetCoreStudy.First.EFCore.Migrations.FondDb
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -73,6 +72,9 @@ namespace NetCoreStudy.First.EFCore.Migrations.FondDb
                 {
                     b.OwnsMany("NetCoreStudy.First.Domain.Entity.Fond.FxFond", "Fonds", b1 =>
                         {
+                            b1.Property<string>("FxFondEventId")
+                                .HasColumnType("text");
+
                             b1.Property<string>("Id")
                                 .HasColumnType("text");
 
@@ -85,15 +87,10 @@ namespace NetCoreStudy.First.EFCore.Migrations.FondDb
                             b1.Property<string>("ExContactId")
                                 .HasColumnType("text");
 
-                            b1.Property<string>("FxFondEventId")
-                                .HasColumnType("text");
-
                             b1.Property<string>("InContactId")
                                 .HasColumnType("text");
 
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("FxFondEventId");
+                            b1.HasKey("FxFondEventId", "Id");
 
                             b1.ToTable("Fonds");
 

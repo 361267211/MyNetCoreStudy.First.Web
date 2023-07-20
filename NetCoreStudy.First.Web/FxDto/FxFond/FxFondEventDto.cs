@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace NetCoreStudy.First.Web.FxDto.FxFond
 {
@@ -29,7 +30,14 @@ namespace NetCoreStudy.First.Web.FxDto.FxFond
         /// 关键词
         /// </summary>
         public string Keyword { get; set; }
-
+        /// <summary>
+        /// 事件开始时间
+        /// </summary>
+        public DateTime? StartDate { get; set; }
+        /// <summary>
+        /// 事件结束时间
+        /// </summary>
+        public DateTime? EndDate { get; set; }
         /// <summary>
         /// 关键词
         /// </summary>

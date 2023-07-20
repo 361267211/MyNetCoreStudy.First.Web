@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using NetCoreStudy.First.Domain.Entity.Fond;
+using NetCoreStudy.First.Web.FxDto.FxCommonDto;
 using NetCoreStudy.First.Web.FxDto.FxFond;
 using NetCoreStudy.First.Web.FxRepository.FxFondRep;
 using System.Collections.Generic;
@@ -22,6 +23,11 @@ namespace NetCoreStudy.First.Web.FxService.FxFondService
             List<FxContact> contacts = await _contactRepository.GetContactsByName(nameCondition);
           
             return contacts.Adapt<List<FxContactDto>>().ToList();
+        }
+
+        public async Task<List<OptionDto>> GetContactsOptions()
+        {
+            return await _contactRepository.GetContactsOptions();
         }
     }
 }

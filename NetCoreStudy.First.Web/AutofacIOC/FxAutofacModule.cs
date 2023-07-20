@@ -39,7 +39,9 @@ namespace NetCoreStudy.First.Web.AutofacIOC
 
             builder.RegisterType<FondEventRepository>()
                 .As<IFondEventRepository>();
-  
+            builder.RegisterType<FondEventService>()
+              .As<IFondEventService>();
+
             base.Load(builder);
         }
     }
