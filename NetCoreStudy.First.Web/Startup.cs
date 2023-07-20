@@ -1,8 +1,10 @@
+using AspNet.Security.OAuth.Validation;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using IdentityServer.EFCore.Entity;
 using IdentityServer4.Validation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -164,7 +166,12 @@ namespace NetCoreStudy.First.Web
                      };
                  });*/
 
-            services.AddAuthentication("Bearer")
+            services.AddAuthentication(options =>
+            {
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = OAuthValidationConstants.Schemes.Bearer;
+            })
                 .AddJwtBearer("Bearer", config =>
                 {
                     config.Authority = "https://localhost:5001";

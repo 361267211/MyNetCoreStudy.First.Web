@@ -6,6 +6,7 @@ using NetCoreStudy.First.Web.FxDto.FxFond;
 using NetCoreStudy.First.Web.FxService.FxFondService;
 using NetCoreStudy.First.Web.Request;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NetCoreStudy.First.Web.Controllers.FondManger
@@ -69,8 +70,12 @@ namespace NetCoreStudy.First.Web.Controllers.FondManger
         [HttpPost]
         public async Task<bool> UpdateEvent(FxFondEventDto eventDto)
         {
-          var user=  _http.HttpContext.User.GetDisplayName();
-          return await  _eventService.UpdateEvent(eventDto);
+            var contactId = _http.HttpContext.User.Claims.FirstOrDefault(e => e.Type=="contactId")?.Value;
+            if (contactId != null) 
+            {
+                eventDto.EventInitiator = contactId;
+            }
+            return await  _eventService.UpdateEvent(eventDto);
 
         }
     }
