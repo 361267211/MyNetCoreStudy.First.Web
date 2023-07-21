@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Z.EntityFramework.Plus;
 using ZSpitz.Util;
 
 namespace NetCoreStudy.First.Web.FxRepository.FxFondRep
@@ -37,7 +36,7 @@ namespace NetCoreStudy.First.Web.FxRepository.FxFondRep
 
         public async Task<List<FxFond>> GetFondsByEvent(string eventId)
         {
-            var eve = await _fondDb.FondEvents.IncludeFilter(d => d.Fonds.Where(e=>e.Amount>=600)).FirstOrDefaultAsync(e => e.Id == eventId);
+            var eve = await _fondDb.FondEvents.Include(d => d.Fonds).FirstOrDefaultAsync(e => e.Id == eventId);
             var Ft = await _fondDb.Fonds.Where(e => e.FxFondEventId == eventId).ToListAsync();
             return Ft;
         }
