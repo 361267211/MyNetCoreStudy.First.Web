@@ -7,10 +7,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using NetCoreStudy.First.BasicModel;
@@ -23,6 +25,7 @@ using NetCoreStudy.First.Web.Middleware;
 using NetCoreStudy.First.Web.SignalR;
 using StackExchange.Redis;
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace NetCoreStudy.First.Web
@@ -58,6 +61,8 @@ namespace NetCoreStudy.First.Web
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordExt>();//自定义资源所有者密码模式认证
 
             services.AddHttpContextAccessor();
+
+            services.AddDirectoryBrowser();
 
 
             services.AddIdentityCore<MyUser>(options =>
@@ -101,8 +106,7 @@ namespace NetCoreStudy.First.Web
 
 
 
-
-
+            services.RegisterMapsterConfiguration();
 
             //EF
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//pg数据库存在的时区问题需要通过本行代码解决
@@ -308,8 +312,14 @@ namespace NetCoreStudy.First.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // app.UseDatabaseInitialize();
-
+            app.UseStaticFiles();
+            app.UseFileServer(new FileServerOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\uploads")),
+                RequestPath = new PathString("/Uploads"),
+                EnableDirectoryBrowsing = true
+            });
 
             if (env.IsDevelopment())
             {

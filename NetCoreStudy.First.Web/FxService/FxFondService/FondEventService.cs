@@ -17,6 +17,11 @@ namespace NetCoreStudy.First.Web.FxService.FxFondService
             _eventRepository = eventRepository;
         }
 
+        public async Task<bool> DeleteEvent(string eventId)
+        {
+           return await _eventRepository.DeleteEvent(eventId);
+        }
+
         public async Task<FxFondEventDto> GetEventById(string eventId)
         {
             FxFondEvent fondEvent= await _eventRepository.GetEventById(eventId);

@@ -78,5 +78,19 @@ namespace NetCoreStudy.First.Web.Controllers.FondManger
             return await  _eventService.UpdateEvent(eventDto);
 
         }
+
+        /// <summary>
+        /// 更新事件
+        /// </summary>
+        /// <param name="eventDto"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        public async Task<bool> DeleteEvent(string eventId)
+        {
+ 
+            return await _eventService.DeleteEvent(eventId);
+
+        }
     }
 }

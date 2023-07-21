@@ -52,6 +52,6 @@ namespace NetCoreStudy.First.Domain.Entity.Fond
         /// <summary>
         /// 关键词
         /// </summary>
-        public List<FxFond> Fonds { get; set; }
+        public List<FxFond> Fonds { get; } = new List<FxFond>();
     }
 }

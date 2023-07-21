@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,5 +38,8 @@ namespace NetCoreStudy.First.Domain.Entity.Fond
         /// </summary>
         public decimal Amount { get; set; }
 
+        [Required]
+        public string FxFondEventId { get; set; }
+        public FxFondEvent FondEvent { get; set; } = null!;
     }
 }

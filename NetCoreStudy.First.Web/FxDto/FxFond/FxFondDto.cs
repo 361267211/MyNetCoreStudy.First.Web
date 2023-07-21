@@ -26,5 +26,10 @@
         /// 活动金额
         /// </summary>
         public decimal Amount { get; set; }
+
+        /// <summary>
+        /// 活动id
+        /// </summary>
+        public string FxFondEventId { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace NetCoreStudy.First.EFCore.Migrations.FondDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("FondContacts");
+                    b.ToTable("FondContacts", (string)null);
                 });
 
             modelBuilder.Entity("NetCoreStudy.First.Domain.Entity.Fond.FxFondEvent", b =>
@@ -66,12 +66,12 @@ namespace NetCoreStudy.First.EFCore.Migrations.FondDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("FondEvents");
+                    b.ToTable("FondEvents", (string)null);
                 });
 
             modelBuilder.Entity("NetCoreStudy.First.Domain.Entity.Fond.FxFondEvent", b =>
                 {
-                    b.OwnsMany("NetCoreStudy.First.Domain.Entity.Fond.FxFond", "Fonds", b1 =>
+                    b.OwnsMany("NetCoreStudy.First.Domain.Entity.Fond.FxFondEvent.Fonds#NetCoreStudy.First.Domain.Entity.Fond.FxFond", "Fonds", b1 =>
                         {
                             b1.Property<string>("Id")
                                 .HasColumnType("text");
@@ -86,6 +86,7 @@ namespace NetCoreStudy.First.EFCore.Migrations.FondDb
                                 .HasColumnType("text");
 
                             b1.Property<string>("FxFondEventId")
+                                .IsRequired()
                                 .HasColumnType("text");
 
                             b1.Property<string>("InContactId")
@@ -95,7 +96,7 @@ namespace NetCoreStudy.First.EFCore.Migrations.FondDb
 
                             b1.HasIndex("FxFondEventId");
 
-                            b1.ToTable("Fonds");
+                            b1.ToTable("Fonds", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("FxFondEventId");

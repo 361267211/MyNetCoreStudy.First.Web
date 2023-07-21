@@ -7,6 +7,7 @@ namespace NetCoreStudy.First.Web.FxService.FxFondService
 {
     public interface IFondEventService
     {
+        Task<bool> DeleteEvent(string eventId);
         Task<FxFondEventDto> GetEventById(string eventId);
         Task<List<FxFondEventDto>> GetEventsByCondition(EventSearchConditionRequest condition);
         Task<bool> UpdateEvent(FxFondEventDto eventDto);

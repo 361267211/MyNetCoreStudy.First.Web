@@ -43,5 +43,14 @@ namespace NetCoreStudy.First.Web.FxService.FxFondService
             var lstdtoFond = lstFonds.Adapt<List<FxFondDto>>();
             return lstdtoFond;
         }
+
+        public async Task UpdateFondInEvent(string eventId, List<FxFondDto> lstdtoFond)
+        {
+            //1.删除原有的所有 fonds
+           await _fondRepository.DeleteFondInEvent(eventId);
+            //2.新增 fonds
+            await _fondRepository.AddFonds(lstdtoFond);
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -13,7 +13,12 @@ namespace NetCoreStudy.First.EFCore.Configs
     {
         public void Configure(EntityTypeBuilder<FxFondEvent> builder)
         {
-            builder.OwnsMany<FxFond>(e => e.Fonds);
+          
+
+            builder.HasMany(e => e.Fonds)
+                .WithOne(e => e.FondEvent)
+                .HasForeignKey(e => e.FxFondEventId)
+                .IsRequired();
         }
     }
 }

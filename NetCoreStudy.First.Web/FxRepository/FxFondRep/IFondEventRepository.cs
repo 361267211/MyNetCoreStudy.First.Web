@@ -8,6 +8,7 @@ namespace NetCoreStudy.First.Web.FxRepository.FxFondRep
 {
     public interface IFondEventRepository
     {
+        Task<bool> DeleteEvent(string eventId);
         Task<FxFondEvent> GetEventById(string eventId);
         Task<List<FxFondEvent>> GetEventsByCondition(EventSearchConditionRequest condition);
         Task<List<FxFondEvent>> GetEventsByInitiator(string contactId);

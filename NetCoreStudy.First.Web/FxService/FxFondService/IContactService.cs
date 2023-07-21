@@ -8,6 +8,7 @@ namespace NetCoreStudy.First.Web.FxService.FxFondService
     public interface IContactService
     {
         public Task<List<FxContactDto>> GetContactsByName(string nameCondition);
-       public Task<List<OptionDto>> GetContactsOptions();
+        Task<List<FxContactDto>> GetContactsInExcel(List<FxContactDto> lstContactDto);
+        public Task<List<OptionDto>> GetContactsOptions();
     }
 }
