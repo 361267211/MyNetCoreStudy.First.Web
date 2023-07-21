@@ -1,5 +1,5 @@
 ﻿using Castle.DynamicProxy;
-using Furion.DatabaseAccessor;
+//using Furion.DatabaseAccessor;
 using Grpc.Core.Interceptors;
 using IdentityServer4.Services;
 using Microsoft.Extensions.Caching.Distributed;
@@ -15,7 +15,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
+//using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace NetCoreStudy.First.Web.AutofacIOC
 {

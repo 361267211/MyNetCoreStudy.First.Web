@@ -7,7 +7,7 @@
 * 更新历史：
 *
 * *******************************************************/
-using Furion.FriendlyException;
+//using Furion.FriendlyException;
 using Grpc.Core;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -56,7 +56,8 @@ namespace NetCoreStudy.Core.GrpcClientHelper
             }
             catch (Exception e)
             {
-                throw Oops.Oh(e.Message);
+                // throw Oops.Oh(e.Message);
+                throw new Exception();
             }
 
         }

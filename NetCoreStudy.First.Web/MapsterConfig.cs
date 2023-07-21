@@ -1,4 +1,4 @@
-﻿using Furion.DatabaseAccessor;
+﻿//using Furion.DatabaseAccessor;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreStudy.First.Domain.Entity.Fond;

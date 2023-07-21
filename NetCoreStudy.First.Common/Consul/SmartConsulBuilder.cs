@@ -8,7 +8,7 @@
 *
 * *******************************************************/
 using Consul;
-using Furion.FriendlyException;
+//using Furion.FriendlyException;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +45,7 @@ namespace NetCoreStudy.Core.Consul
             var consulAddrList = consulAddress.Split(";", StringSplitOptions.RemoveEmptyEntries).ToList();
             if (consulAddrList == null || !consulAddrList.Any())
             {
-                throw Oops.Oh("未找到Consul节点");
+                //throw Oops.Oh("未找到Consul节点");
             }
             var allNodes = consulAddrList;
             var hafCount = (int)Math.Ceiling(allNodes.Count() / 2m);

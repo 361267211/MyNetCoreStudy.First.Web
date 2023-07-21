@@ -7,7 +7,7 @@
 * 更新历史：
 *
 * *******************************************************/
-using Furion.FriendlyException;
+//using Furion.FriendlyException;
 using Grpc.Core;
 using System;
 
@@ -50,7 +50,8 @@ namespace NetCoreStudy.Core.GrpcClientHelper
             var targetAddress = _grpcTargetResolver.GetGrpcTargetAddress(orgCode);
             if (!GrpcChanelChecker.CheckIsUrlFormat(targetAddress))
             {
-                throw Oops.Oh("信道地址不合法");
+                //throw Oops.Oh("信道地址不合法");
+                 throw new Exception();
             }
             var uriAddress = new Uri(targetAddress);
             var tenantChanel = _clientPool.GetClient(uriAddress);
