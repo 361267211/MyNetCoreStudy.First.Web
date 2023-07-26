@@ -14,8 +14,10 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="7.0.0" />
     <PackageReference Include="Castle.Core.AsyncInterceptor" Version="2.1.0" />
-    <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="6.2.1" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="6.2.1" />
+    <PackageReference Include="DotNetCore.CAP" Version="7.1.4" />
+    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="7.1.4" />
+    <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="7.1.4" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="7.1.4" />
     <PackageReference Include="ExpressionTreeToString" Version="3.4.71" />
     <PackageReference Include="IdentityServer4" Version="4.1.2" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />

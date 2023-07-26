@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using FxCode.FxDatabaseAccessor;
+using Mapster;
 using NetCoreStudy.First.Domain.Entity.Fond;
 using NetCoreStudy.First.Web.FxDto.FxFond;
 using NetCoreStudy.First.Web.FxRepository.FxFondRep;
@@ -33,6 +34,8 @@ namespace NetCoreStudy.First.Web.FxService.FxFondService
             List<FxFondEvent> lstEvent = await _eventRepository.GetEventsByCondition(condition);
             return lstEvent.Adapt<List<FxFondEventDto>>();
         }
+
+        [UnitOfWork]
 
         public async Task<bool> UpdateEvent(FxFondEventDto eventDto)
         {

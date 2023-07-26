@@ -11,6 +11,10 @@ namespace NetCoreStudy.First.Web
 {
     public static class MapsterConfig 
     {
+        /// <summary>
+        /// 配置Mapster的对象映射关系
+        /// </summary>
+        /// <param name="services"></param>
         public static void RegisterMapsterConfiguration(this IServiceCollection services)
         {
             TypeAdapterConfig<FxFond, FxFondDto>.ForType()

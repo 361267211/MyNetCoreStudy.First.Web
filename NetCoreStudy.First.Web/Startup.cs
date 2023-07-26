@@ -1,6 +1,7 @@
 using AspNet.Security.OAuth.Validation;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FxCode.FxDatabaseAccessor;
 using IdentityServer.EFCore.Entity;
 using IdentityServer4.Validation;
 using MediatR;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +21,7 @@ using NetCoreStudy.First.BasicModel;
 using NetCoreStudy.First.EFCore;
 using NetCoreStudy.First.Utility.DistributedCache;
 using NetCoreStudy.First.Web.AutofacIOC;
+using NetCoreStudy.First.Web.Filter;
 using NetCoreStudy.First.Web.FxRepository.FxUser;
 using NetCoreStudy.First.Web.FxRepository.FxUser;
 using NetCoreStudy.First.Web.Middleware;
@@ -55,7 +58,7 @@ namespace NetCoreStudy.First.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
- 
+
             //ID4
             //    var migrationsAssembly = typeof(UserDbContext).GetTypeInfo().Assembly.GetName().Name;
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordExt>();//自定义资源所有者密码模式认证
@@ -64,6 +67,9 @@ namespace NetCoreStudy.First.Web
 
             services.AddDirectoryBrowser();
 
+            services.AddDatabaseAccessor();
+
+           // services.Configure<MvcOptions>(e => e.Filters.Add<UnitOfWorkAttribute>());
 
             services.AddIdentityCore<MyUser>(options =>
             {
@@ -75,7 +81,7 @@ namespace NetCoreStudy.First.Web
                 options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
                 options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             });
-            ;
+            
 
             services.AddIdentity<MyUser, MyRole>()
                      .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -184,9 +190,9 @@ namespace NetCoreStudy.First.Web
 
                 });
 
-             services.AddAuthorization();
+            services.AddAuthorization();
 
-            //cap
+            //刘孟配置的cap
             //todo:暂时禁用，CAP 可用后解除注释
             {
                 /*
@@ -222,6 +228,30 @@ namespace NetCoreStudy.First.Web
                 */
             }
 
+
+            //felix 配置的CAP
+            services.AddCap(x =>
+            {
+                x.CollectorCleaningInterval = 300;
+                x.ConsumerThreadCount = 1;
+                x.FailedRetryCount = 50;
+                x.FailedRetryInterval = 60;
+                x.UseStorageLock = true;
+                x.UseDashboard();
+                x.UseRabbitMQ(configure: RabOpt =>
+                {
+                    RabOpt.UserName = "guest";
+                    RabOpt.Password = "guest";
+                    RabOpt.HostName = "42.193.20.184";
+                    RabOpt.Port = 5672;
+                    RabOpt.ExchangeName = "cap.felix.exchange";
+
+                });
+                x.UsePostgreSql(configure: PgOpt =>
+                {
+                    PgOpt.ConnectionString = "Host=42.193.20.184;Port=5432;User ID=postgres;Password=Pwcwelcome1;Database=felix_Fond;Pooling=true;";
+                });
+            });
 
             //跨域问题配置
             services.AddCors(options =>
@@ -305,7 +335,7 @@ namespace NetCoreStudy.First.Web
                 c.AddSecurityRequirement(securityRequirement);
             });
 
- 
+
 
         }
 

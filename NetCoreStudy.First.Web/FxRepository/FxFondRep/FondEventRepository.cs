@@ -81,7 +81,7 @@ namespace NetCoreStudy.First.Web.FxRepository.FxFondRep
             {
                 var res = _eventDb.FondEvents.Update(etyEvent);
             }
-            await _eventDb.SaveChangesAsync();
+          //  await _eventDb.SaveChangesAsync();
             return true;
         }
 
