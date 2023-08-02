@@ -9,8 +9,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="FriendlyException\**" />
 		<Compile Remove="Ocelot.JWT\**" />
+		<EmbeddedResource Remove="FriendlyException\**" />
 		<EmbeddedResource Remove="Ocelot.JWT\**" />
+		<None Remove="FriendlyException\**" />
 		<None Remove="Ocelot.JWT\**" />
 	</ItemGroup>
 
